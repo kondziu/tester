@@ -1,0 +1,71 @@
+quick view??Szybki Podgl¹d
+Are you sure you want to remove??Czy na pewno chcesz usun¹æ?
+ok??OK
+file??Plik
+language version??Wersja Jêzykowa
+shuffle??Tasuj
+preferences??Preferencje
+ignore case??Ignoruj Wielkoœæ Liter
+internet??Internet
+help??Pomoc
+handbook??Podrêcnik U¿ytkownika
+open??Otwórz
+file paths??Œcie¿ki plikowe
+regular expressions??Wyra¿enia regularne
+mkdir??Utwórz katalog
+score??Wynik:
+set address for download??Ustal adres do pobrania informacji:
+message and caption files??Pliki wiadomoœci i etykiet
+error message files??Pliki wiadomoœci b³êdów
+test??Test
+cancel??Wróæ
+training mode??Tryb Treningowy
+save??Zapisz
+poor work??Prawie dobrze! Spróbuj jeszcze raz.
+form title??Tester Program v2.003 pl
+configuration??Ustawienia
+hint??wskazówka:
+default??domyœlny
+configuration title??Tester v2.003 Ustawienia
+quit??WyjdŸ
+stop??Zakoñcz
+erase repetition??Wymarz powtórki
+edit question??Edytuj pytanie
+about title??Tester Program v2.003 pl
+state??Stan
+good work??Dobra robota!
+manage??Zarz¹dzaj plikami
+poor work title??Wiêc...
+start test??Rozpocznij Test
+reload??Prze³aduj
+dynamic tree title??Zarz¹dzanie plikami
+good work title??Dobrze
+forced repetition??Natychmiastowa Powtórka
+download??Pobierz
+about??Informacje...
+close??Zamknij
+rules??Zasady
+use rules??U¿ywaj Zasad
+address??Adres
+general options??Ustawienia Ogólne
+add option title??Dodaj Opcjê
+are you sure you want to remove??Czy na pewno chcesz usun¹æ
+add??Dodaj
+about description??pomocnik w nauce jêzyka
+about author??Konrad Siek
+error messages??Komunikaty b³êdów
+rules tooltip??Lista równowa¿nych fraz
+help me??Pomó¿ mi
+captions and messages??Etykiety i treœci wiadomoœci
+about date??(data wydania 31.08.2006)
+remove??Usuñ
+possible options??Mo¿liwe opcje
+reverse??Odwróæ
+key??Klucz
+language version title??Wersja Jêzykowa
+set??Ustaw
+description??Opis
+statistics??Statystyki
+confirm??Potwierdzenie
+are you sure you want to stop??Czy na pewno chcesz zaprzestaæ pracy?
+would you like to save??Czy chcesz zapisaæ pozosta³¹ do zrobienia czêœæ materia³u?

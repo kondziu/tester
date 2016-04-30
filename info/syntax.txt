@@ -1,0 +1,18 @@
+configuration file: 
+	NAME_OF_FIELD ?? STATE [ ?? DESCRIPTION [ ?? POSSIBLE_STATE_0 ?? ... ?? POSSIBLE_STATE_N ] ] 
+control sequences:
+	?? - separator
+	<SPACE> - white space character
+	<QUESTION> - a single question mark
+	...among other html markers:
+	<BR> - new line character
+
+input file:
+	ANSWER [ <ALT> ANSWER ... ] <HINT_OPEN> [ HINT ] <HINT_CLOSE> [ <TYPE> ] QUESTION_OR_FILEPATH
+or
+ 	[ <TYPE> ] QUESTION_OR_FILEPATH <HINT_OPEN> [ HINT ] <HINT_CLOSE> ANSWER [ <ALT> ANSWER ... ] 
+
+symbols: 	
+		<ALT>,<HINT_OPEN>,<HINT_CLOSE>,<TYPE> 
+		and position of ANSWER and QUESTION_OR_FILEPATH 
+		are presettable

@@ -1,0 +1,48 @@
+close??Close
+about??About
+general options tooltip??Panel for general options having to do with how the program runs.
+rules??Rules
+ok??OK
+file??File
+shuffle??Shuffle
+language version??Language Version
+preferences??Preferences
+general options??General Options
+captions and messages tooltip??Panel for captions and messages which are displayed on buttons, labels etc.
+handbook??User's Handbook
+help??Help
+open??Open
+regular expressions tooltip??Format specification for input files.
+file paths??File Paths
+regular expressions??Regular Expressions
+score??Score:
+error messages tooltip??Panel for error message texts which show up when something goes wrong.
+cancel??Cancel
+test??Test
+training mode??Training Mode
+add??Add
+save??Save
+about description??a language learning assistant
+file paths tooltip??Panel for paths of configuration files necessary for ensuring the correct working of the program.
+about author??by Konrad Siek
+form title??Tester Program v2.0
+rules tooltip??List of equivalent forms.
+error messages??Error Messages
+hint??hint:
+configuration??Configuration
+configuration title??Tester v2.0 Configuration
+help me??Help Me
+captions and messages??Captions and Messages
+remove??Remove
+about date??(issue date 7.08.2006)
+possible options??possible options
+key??key
+reverse??Reverse
+quit??Quit
+erase repetition??Erase Repetition
+edit question??Edit Question
+description??description
+about title??Tester Program v2.0
+statistics??Statistics
+state??state
+start test??Start Test

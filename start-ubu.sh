@@ -1,4 +1,4 @@
 
-cd exercises
+cd dist
 java -jar tester.jar
 

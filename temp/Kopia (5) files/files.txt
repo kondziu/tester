@@ -1,0 +1,18 @@
+input??tests\Uczeñ 3\Matura 1\01.txt
+error directory??lang\errors??Language files concerning messages and captions are located therein.
+input directory??tests??Directory where under normal circumstances test material is kept.
+dir icon??icons\dir.gif
+rules??files\rules.txt
+root icon??icons\book.gif
+message directory??lang\msgs??Language files concerning messages and captions are located therein.
+repetition??files\reps.txt
+options??files\config.txt
+file icon??icons\file.gif
+good icon??icons\bigeyes.gif
+errors??lang\msgs\english.txt
+statistics??files\res.txt
+default address??http://www.program2005.republika.pl/
+path??files\files.txt
+regex??files\regex.txt
+poor icon??icons\tongue.gif
+messages??lang\msgs\english.txt

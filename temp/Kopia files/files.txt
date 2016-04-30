@@ -1,0 +1,10 @@
+input ?? files\lines.txt
+pachuli ?? files\egg.txt
+errors ?? files\errors.txt
+rules ?? files\rules.txt
+result ?? files\res.txt
+path ?? files\files.txt
+regex ?? files\regex.txt
+repetition ?? files\reps.txt
+options ?? files\config.txt
+messages ?? files\messages.txt

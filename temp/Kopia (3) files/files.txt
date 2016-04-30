@@ -1,0 +1,12 @@
+good icon??icons\bigeyes.gif
+input??tests\lines.txt
+errors??files\errors.txt
+input directory??tests??Directory where under normal circumstances test material is kept.
+rules??files\rules.txt
+result??files\res.txt
+path??files\files.txt
+poor icon??icons\tongue.gif
+repetition??files\reps.txt
+regex??files\regex.txt
+messages??files\messages.txt
+options??files\config.txt
