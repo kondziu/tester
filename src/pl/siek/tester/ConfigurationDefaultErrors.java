@@ -24,6 +24,9 @@ import java.util.Map;
 
 public class ConfigurationDefaultErrors extends ConfigurationDefault {
 
+	public static final Object ERROR_OPENING_LOG_FILE = "cannot open log file";
+	public static final Object ERROR_CLOSING_LOG_FILE = "cannot close log file";
+	public static final Object ERROR_WRITING_TO_LOG_FILE = "cannot write to log file";
 	public static String FILE_DOESNT_EXIST_OR_EMPTY = "file doesn't exist or empty";
 	public static String WRONG_FILE_FORMAT = "wrong file format";
 	public static String NO_QUESTION = "no_question";
@@ -146,6 +149,20 @@ public class ConfigurationDefaultErrors extends ConfigurationDefault {
 		map.put(FILE_DOESNT_EXIST_OR_EMPTY, new ConfigurationItem(
 				FILE_DOESNT_EXIST_OR_EMPTY,
 				"File contains no data or doesn't exist.", null, null));
+
+		map.put(ERROR_OPENING_LOG_FILE, new ConfigurationItem(
+				ERROR_OPENING_LOG_FILE,
+				"Cannot open log file for writing.", null, null));
+
+		map.put(ERROR_CLOSING_LOG_FILE, new ConfigurationItem(
+				ERROR_CLOSING_LOG_FILE,
+				"Cannot close log file.", null, null));
+
+		map.put(ERROR_WRITING_TO_LOG_FILE, new ConfigurationItem(
+				ERROR_WRITING_TO_LOG_FILE,
+				"Cannot write to log file.", null, null));
+
+
 
 		return map;
 	}

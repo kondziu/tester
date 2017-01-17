@@ -1,102 +1,109 @@
-Are you sure you want to remove??Are you sure you want to remove<QUESTION>
-language version??Language Version
-preferences??Preferences
-handbook??User's Handbook
-open??Open
-do you want to replace it??Do you want to replace it<QUESTION>
-file paths??File Paths
-score??Score:
-mkdir??Make Directory
-update button text??Update
-test??Test
-cancel??Cancel
-error message files??Error Message Files
-doing repetition??Progressing to Repetition.
-help button text??Help
-end test??This is the end of the test.
-form title??Tester v2.13
-hint??Hint
-erase repetition??Erase Repetition
-about title??Tester Program v2.13
-state??State
-good work??Good work!
-poor work title??Well...
-start test??Start Test
-dynamic tree title??Tester v2.13 File Manager
-close??Close
-about??About
-rules??Rules
-use rules??Use Rules
-progressing to input??Progressing to New Material.
-general options??General Options
-captions and messages tooltip??Panel for captions and messages which are displayed on buttons, labels etc.
-cancel button text??Cancel
-file paths tooltip??Panel for paths of configuration files necessary for ensuring the correct working of the program.
-rules tooltip??List of equivalent forms.
-help me??Help (alt+F1)
-about date??(issue date 25.09.2006)
-up folder tooltip text??Up One Level
-save button text??Save
-information??Information
-set??Set
-do you want to remove??Do you want to remove element<QUESTION>
-where would you like to save??Where would you like to save your progress<QUESTION>
-question??Question
-quick view??Quick View
-home folder tooltip text??Home Directory
-ok??OK
-files of type label text??Files of Type:
-general options tooltip??Panel for general options having to do with how the program runs.
-would you like to save??Would you like to save your progress<QUESTION>
-file??File
-shuffle??Shuffle
-file name label text??File Name:
-ignore case??Ignore Case
-repetition??Repetition
-help??Help
-internet??Internet
-regular expressions tooltip??Format specification for input files.
-are you sure you want to stop??Are you sure you want to stop current work<QUESTION>
-regular expressions??Regular Expressions
-set address for download??Set address for download:
-message and caption files??Message and Caption Files
-training mode??Training Mode
-save??Save
-poor work??Almost right! Try again.
-configuration??Configuration
-confirm??Confirm
-default??default
-configuration title??Tester v2.13 Configuration
-quit??Quit
-stop??Stop
-answers??Answers
-edit question??Edit Question
-manage??Manage
-good work title??Good
-reload??Reload
-forced repetition??Force Repetition
-download??Download
-address??Address
-add option title??Add option
 list view button tooltip text??List
-details view button tooltip text??Details
-out of repetition??There is no more repetition.
-error messages tooltip??Panel for error message texts which show up when something goes wrong.
-are you sure you want to remove??Are you sure you want to remove<QUESTION>
-new folder tooltip text??New Directory
-add??Add
+file paths tooltip??Panel for paths of configuration files necessary for ensuring the correct working of the program.
+test??Test
+score??Score:
+manage??Manage
+open??Open
+help??Help
+search??Search:
+file??File
+ok??OK
+home folder tooltip text??Home Directory
+regular expressions??Regular Expressions
+information??Information
+forced repetition??Force Repetition
 about description??a language learning assistant
-save changes??Do you want to save changes to test file<QUESTION>
-type??Browse
-about author??by Konrad Siek
-error messages??Error Messages
-captions and messages??Captions and Messages
+quick view??Quick View
+reload??Reload
 remove??Remove
-possible options??Possible Options
-key??Key
-reverse??Reverse
-language version title??Tester v2.13 Language Version
-type??Browse
+doing repetition??Progressing to Repetition.
+choose a different file??Choose a different file.
+cancel button text??Cancel
+regular expressions tooltip??Format specification for input files.
 open button text??Open
+no match??No such item found.
+quit??Quit
+configuration title??Tester v2.13 Configuration
+do you want to remove??Do you want to remove element<QUESTION>
+save changes??Do you want to save changes to test file<QUESTION>
+captions and messages??Captions and Messages
+out of repetition??There is no more repetition.
+are you sure you want to remove??Are you sure you want to remove<QUESTION>
+update button text??Update
+preferences??Preferences
+language version title??Tester v2.13 Language Version
+help me??Help (alt+F1)
+reverse??Reverse
+progressing to input??Progressing to New Material.
+poor work??Almost right! Try again.
+mkdir??Make Directory
+dictionary??Dictionary
+help button text??Help
+new folder tooltip text??New Directory
+shuffle??Shuffle
+up folder tooltip text??Up One Level
+configuration??Configuration
+erase repetition??Erase Repetition
+confirm??Confirm
+error messages tooltip??Panel for error message texts which show up when something goes wrong.
+ignore case??Ignore Case
+save??Save
+file name label text??File Name:
+answers??Answers
+use rules??Use Rules
+cancel??Cancel
+download??Download
+type??Browse
+poor work title??Well...
+close??Close
+type??Browse
+form title??Tester v2.13
+good work??Good work!
 description??Description
+handbook??User's Handbook
+error messages??Error Messages
+about date??(issue date 25.09.2006)
+edit question??Edit Question
+key??Key
+Are you sure you want to remove??Are you sure you want to remove<QUESTION>
+training mode??Training Mode
+add option title??Add option
+rules tooltip??List of equivalent forms.
+general options??General Options
+logging??Logging
+file paths??File Paths
+message and caption files??Message and Caption Files
+default??default
+start test??Start Test
+set address for download??Set address for download:
+dynamic tree title??Tester v2.13 File Manager
+internet??Internet
+repetition??Repetition
+stop??Stop
+set??Set
+about??About
+state??State
+would you like to save??Would you like to save your progress<QUESTION>
+are you sure you want to stop??Are you sure you want to stop current work<QUESTION>
+add??Add
+end test??This is the end of the test.
+good work title??Good
 statistics??Statistics
+where would you like to save??Where would you like to save your progress<QUESTION>
+details view button tooltip text??Details
+error message files??Error Message Files
+about title??Tester Program v2.13
+general options tooltip??Panel for general options having to do with how the program runs.
+question??Question
+possible options??Possible Options
+set default??Set Directories
+find??Find
+captions and messages tooltip??Panel for captions and messages which are displayed on buttons, labels etc.
+language version??Language Version
+hint??Hint
+rules??Rules
+save button text??Save
+about author??by Konrad Siek
+do you want to replace it??Do you want to replace it<QUESTION>
+files of type label text??Files of Type:
+address??Address

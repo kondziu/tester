@@ -47,6 +47,7 @@ public class ConfigurationDefaultPath {
 	public static String STATISTICS = "statistics";
 	public static String MEDIA_PLAYER = "media player";
 	public static String HANDBOOK = "handbook";
+	public static String LOG = "log";
 
 	public static Map getDefaultConfig() {
 		Map map = new HashMap();
@@ -116,8 +117,11 @@ public class ConfigurationDefaultPath {
 				"root icon (for file manager use)", null));
 		map.put(RULES, new ConfigurationItem(RULES, "files" + File.separator
 				+ "rules.txt", "file containing rules", null));
-		map.put(STATISTICS, new ConfigurationItem(STATISTICS, "stats"
-				+ File.separator + "stats.txt", "file containing statistics",
+		//map.put(STATISTICS, new ConfigurationItem(STATISTICS, "stats"
+		//		+ File.separator + "stats.txt", "file containing statistics",
+		//		null));
+		map.put(LOG, new ConfigurationItem(LOG, "files"
+				+ File.separator + "log.txt", "log of events during test, used if logging is turn on",
 				null));
 		map
 				.put(

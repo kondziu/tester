@@ -53,6 +53,7 @@ public class ConfigurationDefaultOptions extends ConfigurationDefault {
 	public static final String CHOOSABLE_LANGUAGE = "enable choosable language";
 	public static final String SAVE_CONFIG_ON_EXIT = "set config on exit";
 	public static final String FILE_ENCODING = "file encoding";
+	public static final String SAVE_LOG = "save log";
 
 	public static Map getDefaultConfig() {
 		Map map = new HashMap();
@@ -73,6 +74,8 @@ public class ConfigurationDefaultOptions extends ConfigurationDefault {
 		startTest.add("ask");
 		startTest.add("local");
 		startTest.add("web");
+
+		map.put(SAVE_LOG, new ConfigurationItem(SAVE_LOG, "on", "log events to a file during tests", onOff));
 
 		map.put(DEBUG, new ConfigurationItem(DEBUG, "off",
 				"Shows debug messages - obsolete", onOff));

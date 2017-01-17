@@ -31,6 +31,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -70,8 +71,8 @@ public class Main extends JFrame {
 	 * @version 2.0
 	 */
 	private static final long serialVersionUID = 9218503094273330361L;
-	public static final String VERSION = "2.2";
-	public static final String DATE = "3 Nov 2006 / 13 Aug 2009";
+	public static final String VERSION = "2.5";
+	public static final String DATE = "3 Nov 2006 / 13 Aug 2009 / 18 Jan 2017";
 	private static final String PATH_FILE_PATH = "files" + File.separator
 			+ "paths.txt";
 
@@ -152,7 +153,7 @@ public class Main extends JFrame {
 	private Integer soFar;
 	private JMenuItem start;
 	private JButton startTest;
-	private JMenuItem statistics;
+	private JCheckBoxMenuItem statistics;
 	private JMenuItem stop;
 	private JMenu test;
 	private boolean testCanBeStopped;
@@ -169,6 +170,8 @@ public class Main extends JFrame {
 	private JLabel clockLabel;
 	private boolean showPercentage;
 
+	private Log log;
+
 	/** Creates new form VisualInterface */
 	public Main() {
 		configurationAndSettings = new ConfigurationStorage(PATH_FILE_PATH);
@@ -177,6 +180,9 @@ public class Main extends JFrame {
 		statusLabel
 				.setPreferredSize(new Dimension(this.getPreferredSize().width
 						- 15 - clockLabel.getWidth(), 20));
+		log = new Log(this, configurationAndSettings);
+		log.open(); // TODO ERRORS
+		log.send("Starting program."); // TODO ERRORS
 	}
 
 	/**
@@ -295,7 +301,7 @@ public class Main extends JFrame {
 		stop = new JMenuItem();
 		preferences = new JMenu();
 		language = new JMenuItem();
-		statistics = new JMenuItem();
+		statistics = new JCheckBoxMenuItem();
 		configuration = new JMenuItem();
 		dictionary = new JMenuItem();
 		help = new JMenu();
@@ -500,7 +506,7 @@ public class Main extends JFrame {
 					saveChangesInTest();
 				}
 			potentiallySaveRepetition();
-		}
+			log.send("Stopping test (progress: " + done + "/" + soFar + "/" + toGo + ", grade: " + percentage + ").");		}
 	}
 
 	private void saveChangesInTest() {
@@ -592,12 +598,15 @@ public class Main extends JFrame {
 			File file = fileChooser.getSelectedFile();
 			this.configurationAndSettings.pathConfiguration.getDetailedConfig(
 					ConfigurationDefaultPath.INPUT).setState(file.toString());
+			log.send("Opening test " + file.getAbsolutePath() + ".");
 			return true;
 		}
 		return false;
 	}
 
-	private void quitActionPerformed(ActionEvent evt) {
+	private void quitActionPerformed() {
+		//log.send("Exiting program.");
+		log.send("Exiting program (progress: " + done + "/" + soFar + "/" + toGo + ", grade: " + percentage + ").");
 		this.dispose();
 	}
 
@@ -744,7 +753,7 @@ public class Main extends JFrame {
 		});
 		quit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				quitActionPerformed(evt);
+				quitActionPerformed();
 			}
 		});
 		language.addActionListener(new ActionListener() {
@@ -755,6 +764,11 @@ public class Main extends JFrame {
 		training.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				switchTrainingActionPerformed(evt);
+			}
+		});
+		statistics.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				switchStatisticsActionPerformed(evt);
 			}
 		});
 		repetitionType.addActionListener(new ActionListener() {
@@ -823,6 +837,12 @@ public class Main extends JFrame {
 		dictionary.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				dictionaryActionPerformed(evt);
+			}
+		});
+
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(WindowEvent winEvt) {
+				quitActionPerformed();
 			}
 		});
 	}
@@ -1148,7 +1168,7 @@ public class Main extends JFrame {
 
 		configuration.setEnabled(studentConfigures);
 
-		statistics.setEnabled(false);// TODO function not operational
+		statistics.setEnabled(studentConfigures);
 
 		useRules.setEnabled(studentConfigures);
 		ignoreCase.setEnabled(studentConfigures);
@@ -1156,6 +1176,9 @@ public class Main extends JFrame {
 		repetitionType.setEnabled(true);
 		training.setEnabled(true);
 
+		statistics.setSelected(configurationAndSettings.optionConfiguration
+				.getConfig(ConfigurationDefaultOptions.SAVE_LOG)
+				.compareToIgnoreCase("on") == 0);
 		training.setSelected(configurationAndSettings.optionConfiguration
 				.getConfig(ConfigurationDefaultOptions.MODE)
 				.compareToIgnoreCase("standard") == 0);
@@ -1219,6 +1242,7 @@ public class Main extends JFrame {
 				this.configurationAndSettings.pathConfiguration
 						.getDetailedConfig(ConfigurationDefaultPath.INPUT)
 						.setState(address);
+				log.send("Opening test " + url.toExternalForm() + ".");
 			} catch (MalformedURLException e) {
 				JOptionPane
 						.showMessageDialog(
@@ -1607,12 +1631,14 @@ public class Main extends JFrame {
 		if (reverseEnabled)
 			Collections.reverse(inputList);
 
+		log.send("Starting test.");
+
 		// SCREEN INPUT FILE LINE 1.
 		showNextQuestion();
 	}
 
 	private void stopActionPerformed(ActionEvent evt) {
-
+		log.send("Stopping test (progress: " + done + "/" + soFar + "/" + toGo + ", grade: " + percentage + ").");
 		int stop = JOptionPane
 				.showConfirmDialog(
 						this,
@@ -1733,6 +1759,31 @@ public class Main extends JFrame {
 							.getConfig(
 									ConfigurationDefaultOptions.REPETITION_TYPE)
 							.compareToIgnoreCase("forced") == 0);
+		}
+	}
+
+	private void switchStatisticsActionPerformed(ActionEvent evt) {
+		boolean success = true;
+		if (statistics.isSelected())
+			success = configurationAndSettings.optionConfiguration
+					.getDetailedConfig(ConfigurationDefaultOptions.SAVE_LOG)
+					.setState("on");
+		else
+			success = configurationAndSettings.optionConfiguration
+					.getDetailedConfig(ConfigurationDefaultOptions.SAVE_LOG)
+					.setState("off");
+		if (!success) {
+			JOptionPane
+					.showMessageDialog(
+							this,
+							configurationAndSettings.optionConfiguration
+									.getConfig(ConfigurationDefaultErrors.OPERATION_UNSUCCESSFUL),
+							configurationAndSettings.optionConfiguration
+									.getConfig(ConfigurationDefaultErrors.ERROR),
+							JOptionPane.ERROR_MESSAGE);
+			training.setSelected(configurationAndSettings.optionConfiguration
+					.getConfig(ConfigurationDefaultOptions.SAVE_LOG)
+					.compareToIgnoreCase("on") == 0);
 		}
 	}
 

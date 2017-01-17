@@ -116,7 +116,7 @@ public class ConfigurationDefaultMessages extends ConfigurationDefault {
 	public static String SHUFFLE = "shuffle";
 	public static String START_TEST = "start test";
 	public static String STATE = "state";
-	public static String STATISTICS = "statistics";
+	public static String STATISTICS = "logging";
 	public static String STOP = "stop";
 	public static String TEST = "test";
 	public static String TRAINING_MODE = "training mode";
@@ -278,7 +278,7 @@ public class ConfigurationDefaultMessages extends ConfigurationDefault {
 		map.put(START_TEST, new ConfigurationItem(START_TEST, "Start Test",
 				null, null));
 		map.put(STATE, new ConfigurationItem(STATE, "State", null, null));
-		map.put(STATISTICS, new ConfigurationItem(STATISTICS, "Statistics",
+		map.put(STATISTICS, new ConfigurationItem(STATISTICS, "Logging",
 				null, null));
 		map.put(STOP, new ConfigurationItem(STOP, "Stop", null, null));
 		map.put(TEST, new ConfigurationItem(TEST, "Test", null, null));
