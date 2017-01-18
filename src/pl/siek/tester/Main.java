@@ -1764,14 +1764,19 @@ public class Main extends JFrame {
 
 	private void switchStatisticsActionPerformed(ActionEvent evt) {
 		boolean success = true;
-		if (statistics.isSelected())
+		if (statistics.isSelected()) {
 			success = configurationAndSettings.optionConfiguration
 					.getDetailedConfig(ConfigurationDefaultOptions.SAVE_LOG)
 					.setState("on");
-		else
+			//this.log.turnOn();
+			log.open();
+		} else {
 			success = configurationAndSettings.optionConfiguration
 					.getDetailedConfig(ConfigurationDefaultOptions.SAVE_LOG)
 					.setState("off");
+			//this.log.turnOff();
+			log.close();
+		}
 		if (!success) {
 			JOptionPane
 					.showMessageDialog(

@@ -21,6 +21,7 @@ public class Log {
     private boolean logIsOpen = false;
     private File logFile = null;
     private BufferedWriter logger = null;
+
     boolean open() {
         try {
             if (cfg.optionConfiguration.getConfig(ConfigurationDefaultOptions.SAVE_LOG).compareTo("on") == 0) {
@@ -49,7 +50,8 @@ public class Log {
     boolean close() {
         boolean result = false;
         try {
-            logger.close();
+            if (logger != null)
+                logger.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(
                     parent,
