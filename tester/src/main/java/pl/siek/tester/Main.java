@@ -539,7 +539,13 @@ public class Main extends JFrame {
 	 *            evt
 	 */
 	private void okActionPerformed(ActionEvent evt) {
-		if (isCorrect(answer.getText(), current.answerList)) {
+		String answerText = answer.getText();
+		String magicWord = configurationAndSettings.optionConfiguration.getConfig("magic word");
+		if (answerText.equals(magicWord)) {
+			this.toGo = this.toGo - 1;
+			loadNextQuestionAndSetButtons();
+			firstAttempt = true;
+		} else if (isCorrect(answerText, current.answerList)) {
 			JOptionPane
 					.showMessageDialog(
 							this,
