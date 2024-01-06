@@ -1,4 +1,4 @@
-Tester v2.2
+Tester v2.5
 ===========
 
 A vocab testing program I wrote in my student days that people still apparently find useful.
