@@ -1,0 +1,49 @@
+<project name="Tester" basedir="." default="dist">
+
+    <property file="build.properties"/>
+
+    <target name="run" depends="jar">
+        <echo>Running app from ${build.jar.dir}/${ant.project.name}.jar</echo>
+        <java jar="${build.jar.dir}/${ant.project.name}.jar"
+              fork="true"/>
+    </target>
+
+    <target name="clean">
+        <echo>Cleaning generated files in ${build.dir}</echo>
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <echo>Compiling Java sources into ${build.classes.dir}</echo>
+        <mkdir dir="${build.classes.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${build.classes.dir}"
+               includeantruntime="false"
+               source="11" target="11"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <echo>Creating runnable jar file into ${build.jar.dir}</echo>
+        <mkdir dir="${build.jar.dir}"/>
+        <jar destfile="${build.jar.dir}/${ant.project.name}.jar"
+             basedir="${build.classes.dir}">
+            <manifest>
+                <attribute name="Main-Class"
+                           value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="dist" depends="jar">
+        <echo>Creating distributable files into ${build.dist.dir}</echo>
+        <zip destfile="${build.dist.dir}/${ant.project.name}.zip">
+            <zipfileset dir="${build.jar.dir}/"
+                        includes="${ant.project.name}.jar"
+                        fullpath="Tester/${ant.project.name}.jar"/>
+            <zipfileset dir="${template.dir}/"
+                        includes="**/*"
+                        prefix="Tester/"/>
+        </zip>
+    </target>
+
+</project>
