@@ -2,7 +2,8 @@
 
 A vocab testing program and teacher aid for computer assisted language learning
 classes. Based on a DOS program by Marek Siek, originally written in 2005 in
-Delphi, and re-written in Java 1.4 around 2007. Undergoing modernization.
+Delphi, and re-written in Java 1.4 in November 2006. Currently it is undergoing
+modernization.
 
 ## Install Tester
 
@@ -13,11 +14,11 @@ sudo apt install openjdk-11-jdk
 ```
 
 Download and extract [latest
-release](https://github.com/kondziu/tester/releases/download/v2.5.1/Tester.zip),
+release](https://github.com/kondziu/tester/releases/download/v2.5.1/tester.zip),
 e.g.:
 
 ```bash
-wget https://github.com/kondziu/tester/releases/download/v2.5.1/Tester.zip
+wget https://github.com/kondziu/tester/releases/download/v2.5.1/tester.zip
 unzip Tester.zip
 cd Tester
 ```

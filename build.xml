@@ -3,14 +3,21 @@
     <property file="build.properties"/>
 
     <target name="run" depends="jar">
-        <echo>Running app from ${build.jar.dir}/${ant.project.name}.jar</echo>
-        <java jar="${build.jar.dir}/${ant.project.name}.jar"
+        <echo>Create and populate a working directory at ${sandbox.dir}</echo>
+        <copy todir="${sandbox.dir}">
+            <fileset dir="${template.dir}" includes="**/*"/>
+        </copy>
+        <echo>Running app from ${build.dist.dir}/tester.jar</echo>
+        <java jar="${build.dist.dir}/tester.jar"
+              dir="${sandbox.dir}"
               fork="true"/>
     </target>
 
     <target name="clean">
         <echo>Cleaning generated files in ${build.dir}</echo>
         <delete dir="${build.dir}"/>
+        <echo>Cleaning generated files in ${sandbox.dir}</echo>
+        <delete dir="${sandbox.dir}"/>
     </target>
 
     <target name="compile">
@@ -19,30 +26,41 @@
         <javac srcdir="${src.dir}"
                destdir="${build.classes.dir}"
                includeantruntime="false"
-               source="11" target="11"/>
+               sourcepath="${src.dir}"
+               debug="${debug}"
+               />
     </target>
 
     <target name="jar" depends="compile">
-        <echo>Creating runnable jar file into ${build.jar.dir}</echo>
-        <mkdir dir="${build.jar.dir}"/>
-        <jar destfile="${build.jar.dir}/${ant.project.name}.jar"
+        <echo>Creating runnable jar file into ${build.dist.dir}</echo>
+        <mkdir dir="${build.dist.dir}"/>
+        <jar destfile="${build.dist.dir}/tester.jar"
              basedir="${build.classes.dir}">
+            <fileset dir="${src.dir}" includes="**/*.java"/>
             <manifest>
                 <attribute name="Main-Class"
-                           value="${main-class}"/>
+                           value="${main-class}"/>    
             </manifest>
         </jar>
     </target>
 
     <target name="dist" depends="jar">
         <echo>Creating distributable files into ${build.dist.dir}</echo>
-        <zip destfile="${build.dist.dir}/${ant.project.name}.zip">
-            <zipfileset dir="${build.jar.dir}/"
-                        includes="${ant.project.name}.jar"
-                        fullpath="Tester/${ant.project.name}.jar"/>
+        <zip destfile="${build.dist.dir}/tester.zip">
+            <!-- The runnable jar file -->
+            <zipfileset dir="${build.dist.dir}/"
+                        includes="tester.jar"
+                        fullpath="tester/tester.jar"/>
+            <!-- All default files except scripts (see below) -->
             <zipfileset dir="${template.dir}/"
                         includes="**/*"
-                        prefix="Tester/"/>
+                        excludes="**/*.sh"
+                        prefix="tester/"/>
+            <!-- Separate fileset for scripts to change permissions -->
+            <zipfileset dir="${template.dir}/"
+                        includes="**/*.sh"
+                        filemode="755"
+                        prefix="tester/"/>
         </zip>
     </target>
 

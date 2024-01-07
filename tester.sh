@@ -1,4 +1,3 @@
 #!/bin/bash
 
-cd dist
-java -jar tester.jar
+java -jar build/dist/tester.jar

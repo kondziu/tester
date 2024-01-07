@@ -71,7 +71,7 @@ public class Main extends JFrame {
 	 * @version 2.0
 	 */
 	private static final long serialVersionUID = 9218503094273330361L;
-	public static final String VERSION = "2.5";
+	public static final String VERSION = "2.5.1";
 	public static final String DATE = "3 Nov 2006 / 13 Aug 2009 / 18 Jan 2017";
 	private static final String PATH_FILE_PATH = "files" + File.separator
 			+ "paths.txt";
