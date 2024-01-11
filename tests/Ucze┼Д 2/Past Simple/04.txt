@@ -1,6 +1,0 @@
-pp1[]pp1
-pp2[]pp2
-pp3[]pp3
-pp4[]pp4
-pp5[]pp5
-pp6[]pp6

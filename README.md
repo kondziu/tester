@@ -1,4 +1,4 @@
-# Tester v2.5.1
+# Tester v2.5.2
 
 A vocab testing program and teacher aid for computer assisted language learning
 classes. Based on a DOS program by Marek Siek, originally written in 2005 in
@@ -14,11 +14,11 @@ sudo apt install openjdk-11-jdk
 ```
 
 Download and extract [latest
-release](https://github.com/kondziu/tester/releases/download/v2.5.1/tester.zip),
+release](https://github.com/kondziu/tester/releases/download/v2.5.2/tester-2.5.2-dist.zip),
 e.g.:
 
 ```bash
-wget https://github.com/kondziu/tester/releases/download/v2.5.1/tester.zip
+wget https://github.com/kondziu/tester/releases/download/v2.5.2/tester-2.5.2-dist.zip
 unzip Tester.zip
 cd Tester
 ```
@@ -38,32 +38,38 @@ Start with run script:
 Install prerequisites:
 
 ```bash
-sudo apt ant
+sudo apt install maven
 ```
 
-Run build script:
+Create jar and distributable archive file:
 
 ```bash
-ant clean jar
+mvn clean package
+```
+
+Compile and run program (from classes):
+
+```bash
+mvn exec:java
 ```
 
 Start compiled program (from Jar):
 
 ```bash
-ant run
+java -jar build/tester-2.5.2.jar
 ```
 
 Create distributable archive file:
 
 ```bash
-ant dist
+mvn clean package assembly:single
 ```
 
-See `build.xml` for a list of targets.
+See `pom.xml` for a list of targets.
 
 ## Requirements (summary)
 
-| requirement                      | version | needed for      |
-| :--                              | :--     | :--             |
-| `java`                           | 11      | running the app |
-| [`ant`](https://ant.apache.org/) | 1.10    | development     |
+| requirement                        | version | needed for               |
+| :--                                | :--     | :--                      |
+| Java                               | 11      | running the app          |
+| [Maven](https://maven.apache.org/) | 1.10    | development and building |
