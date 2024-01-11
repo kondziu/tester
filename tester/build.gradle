@@ -1,0 +1,96 @@
+plugins {
+    id 'application'
+    
+}
+
+apply plugin: "java"
+version = '2.5.2'
+
+repositories {
+    mavenCentral()
+}
+
+application {
+    mainClass = 'Tester'
+
+    // Set working dir for the `run` task
+    tasks.run.workingDir = file("${buildDir}/working-dir/")
+}
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Tester'
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(19))             
+    }
+}
+
+/**
+ * Task that prepares a working directory to run the application in. It
+ * populates the working directory with the contents from the directory
+ * "template/"
+ */
+task prepareWorkingDir(type: Copy) {
+    description = "Copy template files to temporary working directory"
+    from layout.projectDirectory.dir("template")
+    into layout.buildDirectory.dir("working-dir")
+}
+
+// Make the run task depend on the prepareWorkingDir task
+run.dependsOn(prepareWorkingDir)
+
+/**
+ * Generate the scripts to start the application.
+ */
+task generateScripts() {
+    doLast {
+        def dirPath = "${buildDir}/generated/scripts/"
+        def scriptBasename = "${rootProject.name}-${version}"
+        def scriptPath = "${dirPath}/${scriptBasename}.sh"
+        def script = """\
+        #!/bin/bash
+
+        java -jar "${rootProject.name}-${version}.jar"
+        """
+
+        project.file(dirPath).mkdirs()
+        file(scriptPath).text = script.stripIndent()
+        project.exec {
+            commandLine('chmod', 'a+x', scriptPath)
+        }
+    }
+}
+
+/**
+ * Task that prepares a distribution file that contains:
+ * - the executable Jar file that contains the application
+ * - a run script that executes the application (via the Jar file)
+ * - a collection of files needed to run the application
+ */
+task dist(type: Zip) {
+    dependsOn 'jar'
+    dependsOn 'generateScripts'
+    group 'Distribution'
+    description = 'Create a Zip file containing the Jar and all the resources needed to run the application'
+    archiveBaseName = "$project.name"
+    destinationDirectory = layout.buildDirectory.dir("dist")
+    from layout.projectDirectory.dir("template")
+    from layout.buildDirectory.file("libs/${rootProject.name}-${version}.jar")
+    from layout.buildDirectory.file("generated/scripts/${rootProject.name}-${version}.sh")
+
+}
+
+// dependencies {
+//     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+//
+//     //implementation 'com.google.guava:guava:31.1-jre'
+// }
+//
+// tasks.named('test') {
+//     useJUnitPlatform()
+// }

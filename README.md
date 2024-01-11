@@ -14,11 +14,11 @@ sudo apt install openjdk-11-jdk
 ```
 
 Download and extract [latest
-release](https://github.com/kondziu/tester/releases/download/v2.5.2/tester-2.5.2-dist.zip),
+release](https://github.com/kondziu/tester/releases/download/v2.5.2/tester-2.5.2.zip),
 e.g.:
 
 ```bash
-wget https://github.com/kondziu/tester/releases/download/v2.5.2/tester-2.5.2-dist.zip
+wget https://github.com/kondziu/tester/releases/download/v2.5.2/tester-2.5.2.zip
 unzip Tester.zip
 cd Tester
 ```
@@ -30,46 +30,45 @@ cd Tester
 Start with run script:
 
 ```bash
-./tester.sh
+./tester-2.5.2.sh
 ```
 
 ## Build
 
-Install prerequisites:
+Compile and run program (in working directory `app/build/working-dir/`):
 
 ```bash
-sudo apt install maven
+./gradlew run
 ```
 
-Create jar and distributable archive file:
+Create jar (`app/build/jar/tester-2.5.2.jar`):
 
 ```bash
-mvn clean package
+./gradlew jar 
 ```
 
-Compile and run program (from classes):
-
-```bash
-mvn exec:java
-```
 
 Start compiled program (from Jar):
 
 ```bash
-java -jar build/tester-2.5.2.jar
+java -jar app/build/libs/tester-2.5.2.jar
 ```
 
-Create distributable archive file:
+Create distribution package (`app/build/dist/tester-2.5.2.zip`):
 
 ```bash
-mvn clean package assembly:single
+./gradlew dist
 ```
 
-See `pom.xml` for a list of targets.
+For a list of targets:
+
+```bash
+./gradlew tasks
+```
 
 ## Requirements (summary)
 
-| requirement                        | version | needed for               |
-| :--                                | :--     | :--                      |
-| Java                               | 11      | running the app          |
-| [Maven](https://maven.apache.org/) | 1.10    | development and building |
+| requirement                         | version | needed for                          |
+| :--                                 | :--     | :--                                 |
+| Java                                | 11      | running the app                     |
+| [Gradle](https://maven.apache.org/) | 8.0     | development and building (included) |
