@@ -72,3 +72,29 @@ For a list of targets:
 | :--                                 | :--     | :--                                 |
 | Java                                | 11      | running the app                     |
 | [Gradle](https://maven.apache.org/) | 8.0     | development and building (included) |
+
+## Troubleshooting
+
+### Invalid Java installation
+
+When building, the build command reports invalid toolchains:
+
+```bash
+./gradlew build
+```
+
+```
+Invalid Java installation found at '/usr/lib/jvm/openjdk-17' (Common Linux Locations). It will be re-checked in the next build. This might have performance impact if it keeps failing. Run the 'javaToolchains' task for more details.
+Invalid Java installation found at '/usr/lib/jvm/openjdk-11' (Common Linux Locations). It will be re-checked in the next build. This might have performance impact if it keeps failing. Run the 'javaToolchains' task for more details.
+Invalid Java installation found at '/usr/lib/jvm/openjdk-18' (Common Linux Locations). It will be re-checked in the next build. This might have performance impact if it keeps failing. Run the 'javaToolchains' task for more details.
+Invalid Java installation found at '/usr/lib/jvm/openjdk-19' (Common Linux Locations). It will be re-checked in the next build. This might have performance impact if it keeps failing. Run the 'javaToolchains' task for more details.
+```
+
+Gradle auto JVM finder is finding JVM sources and misinterpreting them as
+complete JVM installations. Set a specific JVM to be used and turn off automatic
+detection. Write this to `gradle.properties` in project root:
+
+```
+org.gradle.java.installations.auto-detect=false
+org.gradle.java.installations.paths=/usr/lib/jvm/java-19-openjdk-amd64
+```

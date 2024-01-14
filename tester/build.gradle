@@ -6,8 +6,20 @@ plugins {
 apply plugin: "java"
 version = '2.5.2'
 
+dependencies {
+    implementation project(':cases')
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+}
+
 repositories {
     mavenCentral()
+}
+
+sourceSets {
+    intTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
 }
 
 application {
@@ -85,12 +97,7 @@ task dist(type: Zip) {
 
 }
 
-// dependencies {
-//     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
-//
-//     //implementation 'com.google.guava:guava:31.1-jre'
-// }
-//
-// tasks.named('test') {
-//     useJUnitPlatform()
-// }
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
+

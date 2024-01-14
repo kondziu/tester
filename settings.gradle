@@ -1,3 +1,3 @@
 rootProject.name = 'tester'
 
-include('tester')
+include('tester', 'cases')

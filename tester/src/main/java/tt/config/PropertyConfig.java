@@ -1,28 +1,32 @@
 package tt.config;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
 import tt.config.exceptions.ConfigException;
-import tt.config.exceptions.ConfigIOException;
-import tt.config.exceptions.NoPropertyException;
+import tt.config.exceptions.ConfigLoadException;
+import tt.config.exceptions.ConfigOpenException;
 
-public class PropertyConfig extends AbstractConfig implements Config {
+public class PropertyConfig extends AbstractConfig {
 
-    final private String path;
+    final private String file;
     private Properties properties;
 
-    public static void main(String[] args) throws Exception {
-        Config config = new PropertyConfig("default.properties");
-        System.out.println(config.getStr("magic_word.bypass"));
-        System.out.println(config.getStr("magic_word.good"));
+    public PropertyConfig(String path) {
+        this.file = path;
     }
 
-    public PropertyConfig(String path) {
-        this.path = path;
+    // public PropertyConfig(File file) {
+    //     this.file = file.getPath();
+    // }
+
+    @Override
+    public String getDescriptor() {
+        return this.file;
     }
 
     @Override
@@ -31,12 +35,12 @@ public class PropertyConfig extends AbstractConfig implements Config {
     }
 
     @Override
-    final public String get(String key) throws ConfigException {
+    final public Optional<String> get(String key) throws ConfigException {
         String value = this.properties.getProperty(key);
         if (null == value) {
-            throw new NoPropertyException(this.path, key);
+            return Optional.empty();
         }
-        return value;
+        return Optional.of(value);
     }
 
     @Override
@@ -49,20 +53,14 @@ public class PropertyConfig extends AbstractConfig implements Config {
         // Locate the resource from the classpath and read the contents of the
         // resource as a Property file.
         this.properties = new Properties();
-        InputStream input = Config.class.getClassLoader().getResourceAsStream(this.path);
+        InputStream input = Config.class.getClassLoader().getResourceAsStream(this.file);
         if (null == input) {
-            // TODO make into its own exception class
-            String message = 
-                String.format("Cannot open resource: '%s' to load configuration", this.path);
-            throw new ConfigIOException(this.path, message);
+            throw new ConfigOpenException(this.getDescriptor());
         }
         try {
             this.properties.load(input);
         } catch (IOException e) {
-            // TODO make into its own exception class
-            String message = 
-                String.format("Cannot load configuration from resource: '%s'", this.path);
-            throw new ConfigIOException(this.path, message, e);
+            throw new ConfigLoadException(this.getDescriptor(), e);
         }
     }
 
