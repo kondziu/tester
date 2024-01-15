@@ -1,6 +1,5 @@
 package tt.config;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
@@ -19,10 +18,6 @@ public class PropertyConfig extends AbstractConfig {
     public PropertyConfig(String path) {
         this.file = path;
     }
-
-    // public PropertyConfig(File file) {
-    //     this.file = file.getPath();
-    // }
 
     @Override
     public String getDescriptor() {

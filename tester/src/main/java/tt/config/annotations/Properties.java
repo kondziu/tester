@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,9 +17,48 @@ import tt.config.annotations.exceptions.NotAnnotatedException;
 import tt.config.annotations.exceptions.UnsupportedFieldTypeException;
 import tt.config.exceptions.ConfigException;
 
-public class Properties {
+public interface Properties {
 
-    private static final From fromPropertiesAnnotation(Class cls) throws NotAnnotatedException {
+    public static final Map<Class<?>, FieldSetter> allowedTypes = Map.of(
+        String.class, Properties::setStringField,
+        Integer.class, Properties::setIntegerField,
+        Integer.TYPE, Properties::setIntegerFieldFromPrimitive,
+        Boolean.class, Properties::setBooleanField,
+        Boolean.TYPE, Properties::setBooleanFieldFromPrimitive
+    );
+
+    @FunctionalInterface
+    public interface FieldSetter {
+        void apply(Properties obj, Config config, Field field, String property) throws ConfigException, AnnotationException, IllegalAccessException;
+    }
+
+    default void setStringField(Config config, Field field, String property) throws ConfigException, AnnotationException, IllegalAccessException {
+        String value = config.getStringOrFail(property);
+        field.set(this, value);
+    }
+
+    default void setIntegerFieldFromPrimitive(Config config, Field field, String property) throws ConfigException, AnnotationException, IllegalAccessException {
+        int value = config.getIntegerOrFail(property);
+        field.setInt(this, value);
+    }
+
+    default void setIntegerField(Config config, Field field, String property) throws ConfigException, AnnotationException, IllegalAccessException {
+        Integer value = config.getIntegerOrFail(property);
+        field.set(this, value);
+    }
+
+    default void setBooleanFieldFromPrimitive(Config config, Field field, String property) throws ConfigException, AnnotationException, IllegalAccessException {
+        Boolean value = config.getBooleanOrFail(property);
+        field.setBoolean(this, value);
+    }
+
+    default void setBooleanField(Config config, Field field, String property) throws ConfigException, AnnotationException, IllegalAccessException {
+        boolean value = config.getBooleanOrFail(property);
+        field.set(this, value);
+    }
+
+    default From extractPropertiesAnnotation() throws NotAnnotatedException {
+        Class<?> cls = this.getClass();
         Annotation propertyInterface = cls.getAnnotation(From.class);
         if (null == propertyInterface) {
             throw new NotAnnotatedException(cls, From.class);
@@ -26,23 +66,25 @@ public class Properties {
         return (From) propertyInterface;
     }
 
-    private static final String fromFile(Class cls) throws NotAnnotatedException, FileNotFoundException {
-        From from = Properties.fromPropertiesAnnotation(cls);
+    default String extractPropertiesFilePath() throws NotAnnotatedException, FileNotFoundException {
+        From from = this.extractPropertiesAnnotation();
         String path = from.file();
         URL resource = Config.class.getClassLoader().getResource(path);
         if (resource == null) {
+            Class<?> cls = this.getClass();
             throw new FileNotFoundException(cls, path);
         }
         return path;
     }
 
-    private static final List<Field> optionAnnotatedFields(Class cls) {
+    default List<Field> extractOptionAnnotatedFields() {
+        Class<?> cls = this.getClass();
         return Stream.of(cls.getFields())
             .filter(f -> f.isAnnotationPresent(Option.class))
             .collect(Collectors.toList());
     }
 
-    private static final String getPropertyName(Field field) {
+    default String extractPropertyNameFromField(Field field) {
         Option annotation = field.getAnnotation(Option.class);
         String property = annotation.property();
         if (property.isEmpty()) {
@@ -52,55 +94,24 @@ public class Properties {
         return property;
     }
 
-    private static final void setFieldValueFromConfig(Config config, Object object, Field field) throws ConfigException, AnnotationException, IllegalAccessException {
+    default void setFieldValueFromConfig(Config config, Field field) throws ConfigException, AnnotationException, IllegalAccessException {
         
-        Class type = field.getType();
-        
-        Class[] allowedTypes = new Class[] {String.class, Integer.class, Integer.TYPE, Boolean.class, Boolean.TYPE};
-        String property = getPropertyName(field);
-
-        if (type == String.class) {
-            String value = config.getStringOrFail(property);
-            field.set(object, value);
-            return;
+        Class<?> type = field.getType();        
+        if (!Properties.allowedTypes.containsKey(type)) {
+            throw new UnsupportedFieldTypeException(type, field, type, allowedTypes.keySet());
         }
-
-        if (type == Integer.TYPE) {
-            int value = config.getIntegerOrFail(property);
-            field.setInt(object, value);
-            return;
-        }
-
-        if (type == Integer.class) {
-            Integer value = config.getIntegerOrFail(property);
-            field.set(object, value);
-            return;
-        }
-
-        if (type == Boolean.TYPE) {
-            boolean value = config.getBooleanOrFail(property);
-            field.setBoolean(object, value);
-            return;
-        }
-
-        if (type == Boolean.class) {
-            Boolean value = config.getBooleanOrFail(property);
-            field.set(object, value);
-            return;
-        }
-
-        throw new UnsupportedFieldTypeException(type, field, type, allowedTypes);
+        String property = this.extractPropertyNameFromField(field);
+        FieldSetter setter = Properties.allowedTypes.get(type);
+        setter.apply(this, config, field, property);
     }
 
-    public static final void initialize(Object object) throws ConfigException, AnnotationException, IllegalAccessException {
-
-        Class cls = object.getClass();
-        String file = Properties.fromFile(cls);
+    default void initializeProperties() throws ConfigException, AnnotationException, IllegalAccessException {
+        String file = this.extractPropertiesFilePath();
         Config config = new PropertyConfig(file);
-        List<Field> fields = Properties.optionAnnotatedFields(cls);     
+        List<Field> fields = this.extractOptionAnnotatedFields();
 
         for (Field field: fields) {
-            setFieldValueFromConfig(config, object, field);
+            this.setFieldValueFromConfig(config, field);
         }
     }
 }

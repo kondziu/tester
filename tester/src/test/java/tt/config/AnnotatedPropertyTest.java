@@ -6,48 +6,47 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import tt.config.annotations.From;
-import tt.config.annotations.Option;
 import tt.config.annotations.Properties;
+import tt.config.annotations.Option;
 import tt.config.annotations.exceptions.FileNotFoundException;
 import tt.config.annotations.exceptions.NotAnnotatedException;
 import tt.config.exceptions.ConversionException;
 import tt.config.exceptions.NoPropertyException;
 
-
 public class AnnotatedPropertyTest {
 
-    public class TestClassNotAnnotated {}
+    public class TestClassNotAnnotated implements Properties {}
 
     @Test
     void testClassNotAnnotated() throws Exception {
         assertThrows(NotAnnotatedException.class, () -> {
             var obj = new TestClassNotAnnotated();
-            Properties.initialize(obj);
+            obj.initializeProperties();
         });
     }
 
     @From(file = "tt/config/.not_here.properties")
-    public class TestClassWrongPath { }
+    public class TestClassWrongPath implements Properties { }
 
     @Test
     void testClassWrongPath() throws Exception {
         assertThrows(FileNotFoundException.class, () -> {
             var obj = new TestClassWrongPath();
-            Properties.initialize(obj);
+            obj.initializeProperties();
         });
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassEmpty { }
+    public class TestClassEmpty implements Properties { }
 
     @Test
     void testClassEmpty() throws Exception {
         var obj = new TestClassEmpty();
-        Properties.initialize(obj);
+        obj.initializeProperties();
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassStringField {
+    public class TestClassStringField implements Properties {
         @Option
         public String fieldStr;
     }
@@ -55,12 +54,12 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassStringField() throws Exception {
         var obj = new TestClassStringField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals("Hello, world!", obj.fieldStr);
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassStringRenamedField {
+    public class TestClassStringRenamedField implements Properties {
         @Option(property = "field_str")
         public String str;
     }
@@ -68,12 +67,12 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassStringRenamedField() throws Exception {
         var obj = new TestClassStringRenamedField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals("Hello, world!", obj.str);
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassIntegerField {
+    public class TestClassIntegerField implements Properties {
         @Option
         public Integer fieldInt;
     }
@@ -81,12 +80,12 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassIntegerField() throws Exception {
         var obj = new TestClassIntegerField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals(42, obj.fieldInt);
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassIntegerRenamedField {
+    public class TestClassIntegerRenamedField implements Properties {
         @Option(property = "field_int")
         public Integer i;
     }
@@ -94,12 +93,12 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassIntegerRenamedField() throws Exception {
         var obj = new TestClassIntegerRenamedField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals(42, obj.i);
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassIntegerPrimitiveField {
+    public class TestClassIntegerPrimitiveField implements Properties {
         @Option
         public int fieldInt;
     }
@@ -107,12 +106,12 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassIntegerPrimitiveField() throws Exception {
         var obj = new TestClassIntegerPrimitiveField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals(42, obj.fieldInt);
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassIntegerRenamedPrimitiveField {
+    public class TestClassIntegerRenamedPrimitiveField implements Properties {
         @Option(property = "field_int")
         public int i;
     }
@@ -120,12 +119,12 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassIntegerRenamedPrimitiveField() throws Exception {
         var obj = new TestClassIntegerRenamedPrimitiveField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals(42, obj.i);
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassBooleanField {
+    public class TestClassBooleanField implements Properties {
         @Option
         public Boolean fieldBool;
     }
@@ -133,12 +132,12 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassBooleanField() throws Exception {
         var obj = new TestClassBooleanField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals(true, obj.fieldBool);
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassBooleanRenamedField {
+    public class TestClassBooleanRenamedField implements Properties {
         @Option(property = "field_bool")
         public Boolean b;
     }
@@ -146,13 +145,13 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassBooleanRenamedField() throws Exception {
         var obj = new TestClassBooleanRenamedField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals(true, obj.b);
     }
 
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassBooleanPrimitiveField {
+    public class TestClassBooleanPrimitiveField implements Properties {
         @Option
         public boolean fieldBool;
     }
@@ -160,12 +159,12 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassBooleanPrimitiveField() throws Exception {
         var obj = new TestClassBooleanPrimitiveField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals(true, obj.fieldBool);
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassBooleanRenamedPrimitiveField {
+    public class TestClassBooleanRenamedPrimitiveField implements Properties {
         @Option(property = "field_bool")
         public boolean b;
     }
@@ -173,12 +172,12 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassBooleanRenamedPrimitiveField() throws Exception {
         var obj = new TestClassBooleanRenamedPrimitiveField ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals(true, obj.b);
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassMix {
+    public class TestClassMix implements Properties {
         @Option
         public Boolean fieldBool;
 
@@ -201,7 +200,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassMix() throws Exception {
         var obj = new TestClassMix ();
-        Properties.initialize(obj);
+        obj.initializeProperties();
         assertEquals(true, obj.fieldBool);
         assertEquals(42, obj.fieldInt);
         assertEquals("Hello, world!", obj.fieldStr);
@@ -211,7 +210,7 @@ public class AnnotatedPropertyTest {
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassWrongTypeInt {
+    public class TestClassWrongTypeInt implements Properties {
         @Option
         public int fieldStr;
     }
@@ -220,14 +219,14 @@ public class AnnotatedPropertyTest {
     void testClassWrongTypeInt() throws Exception {
         assertThrows(ConversionException.class, () -> {
             var obj = new TestClassWrongTypeInt ();
-            Properties.initialize(obj);
+            obj.initializeProperties();
             // Integer s = obj.fieldStr;
             // System.out.println(s);
         });
     }
 
     @From(file = "tt/config/.testing.properties")
-    public class TestClassWrongTypeBoolean {
+    public class TestClassWrongTypeBoolean implements Properties {
         @Option
         public boolean fieldStr;
     }
@@ -236,7 +235,7 @@ public class AnnotatedPropertyTest {
     void testClassWrongTypeBoolean() throws Exception {
         assertThrows(ConversionException.class, () -> {
             var obj = new TestClassWrongTypeBoolean ();
-            Properties.initialize(obj);
+            obj.initializeProperties();
         });
     }
 
@@ -247,7 +246,7 @@ public class AnnotatedPropertyTest {
     //     });
     // }
     @From(file = "tt/config/.testing.properties")
-    public class TestClassMissingProperty {
+    public class TestClassMissingProperty implements Properties {
         @Option(property = "fieldStr")
         public String nope;
     }
@@ -257,7 +256,7 @@ public class AnnotatedPropertyTest {
     void testClassMissingProperty() throws Exception {
         assertThrows(NoPropertyException.class, () -> {
             var obj = new TestClassMissingProperty ();
-            Properties.initialize(obj);
+            obj.initializeProperties();
         });
     }
 }

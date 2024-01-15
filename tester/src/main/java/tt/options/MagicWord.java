@@ -7,10 +7,10 @@ import tt.config.exceptions.ConfigException;
 import tt.config.annotations.From;
 
 @From(file="tt/options/magic_word.properties")
-public class MagicWord {
+public class MagicWord implements Properties {
 
     public MagicWord() throws IllegalAccessException, ConfigException, AnnotationException {
-        Properties.initialize(this);
+        this.initializeProperties();
     }
 
     @Option
