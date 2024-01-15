@@ -1,6 +1,5 @@
 package tt.config.annotations;
 
-import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -93,14 +92,13 @@ public class Properties {
         throw new UnsupportedFieldTypeException(type, field, type, allowedTypes);
     }
 
-    public static final void initializeProperties(Object object) throws ConfigException, AnnotationException, IllegalAccessException {
+    public static final void initialize(Object object) throws ConfigException, AnnotationException, IllegalAccessException {
 
         Class cls = object.getClass();
         String file = Properties.fromFile(cls);
         Config config = new PropertyConfig(file);
         List<Field> fields = Properties.optionAnnotatedFields(cls);     
 
-        System.err.println("FIELDS " + fields);
         for (Field field: fields) {
             setFieldValueFromConfig(config, object, field);
         }

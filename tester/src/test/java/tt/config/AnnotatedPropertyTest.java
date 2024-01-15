@@ -22,7 +22,7 @@ public class AnnotatedPropertyTest {
     void testClassNotAnnotated() throws Exception {
         assertThrows(NotAnnotatedException.class, () -> {
             var obj = new TestClassNotAnnotated();
-            Properties.initializeProperties(obj);
+            Properties.initialize(obj);
         });
     }
 
@@ -33,7 +33,7 @@ public class AnnotatedPropertyTest {
     void testClassWrongPath() throws Exception {
         assertThrows(FileNotFoundException.class, () -> {
             var obj = new TestClassWrongPath();
-            Properties.initializeProperties(obj);
+            Properties.initialize(obj);
         });
     }
 
@@ -43,7 +43,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassEmpty() throws Exception {
         var obj = new TestClassEmpty();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
     }
 
     @From(file = "tt/config/.testing.properties")
@@ -55,7 +55,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassStringField() throws Exception {
         var obj = new TestClassStringField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals("Hello, world!", obj.fieldStr);
     }
 
@@ -68,7 +68,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassStringRenamedField() throws Exception {
         var obj = new TestClassStringRenamedField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals("Hello, world!", obj.str);
     }
 
@@ -81,7 +81,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassIntegerField() throws Exception {
         var obj = new TestClassIntegerField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals(42, obj.fieldInt);
     }
 
@@ -94,7 +94,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassIntegerRenamedField() throws Exception {
         var obj = new TestClassIntegerRenamedField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals(42, obj.i);
     }
 
@@ -107,7 +107,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassIntegerPrimitiveField() throws Exception {
         var obj = new TestClassIntegerPrimitiveField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals(42, obj.fieldInt);
     }
 
@@ -120,7 +120,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassIntegerRenamedPrimitiveField() throws Exception {
         var obj = new TestClassIntegerRenamedPrimitiveField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals(42, obj.i);
     }
 
@@ -133,7 +133,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassBooleanField() throws Exception {
         var obj = new TestClassBooleanField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals(true, obj.fieldBool);
     }
 
@@ -146,7 +146,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassBooleanRenamedField() throws Exception {
         var obj = new TestClassBooleanRenamedField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals(true, obj.b);
     }
 
@@ -160,7 +160,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassBooleanPrimitiveField() throws Exception {
         var obj = new TestClassBooleanPrimitiveField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals(true, obj.fieldBool);
     }
 
@@ -173,7 +173,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassBooleanRenamedPrimitiveField() throws Exception {
         var obj = new TestClassBooleanRenamedPrimitiveField ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals(true, obj.b);
     }
 
@@ -201,7 +201,7 @@ public class AnnotatedPropertyTest {
     @Test
     void testClassMix() throws Exception {
         var obj = new TestClassMix ();
-        Properties.initializeProperties(obj);
+        Properties.initialize(obj);
         assertEquals(true, obj.fieldBool);
         assertEquals(42, obj.fieldInt);
         assertEquals("Hello, world!", obj.fieldStr);
@@ -213,14 +213,14 @@ public class AnnotatedPropertyTest {
     @From(file = "tt/config/.testing.properties")
     public class TestClassWrongTypeInt {
         @Option
-        int fieldStr;
+        public int fieldStr;
     }
     
     @Test
     void testClassWrongTypeInt() throws Exception {
         assertThrows(ConversionException.class, () -> {
             var obj = new TestClassWrongTypeInt ();
-            Properties.initializeProperties(obj);
+            Properties.initialize(obj);
             // Integer s = obj.fieldStr;
             // System.out.println(s);
         });
@@ -229,14 +229,14 @@ public class AnnotatedPropertyTest {
     @From(file = "tt/config/.testing.properties")
     public class TestClassWrongTypeBoolean {
         @Option
-        boolean fieldStr;
+        public boolean fieldStr;
     }
     
     @Test
     void testClassWrongTypeBoolean() throws Exception {
         assertThrows(ConversionException.class, () -> {
             var obj = new TestClassWrongTypeBoolean ();
-            Properties.initializeProperties(obj);
+            Properties.initialize(obj);
         });
     }
 
@@ -248,17 +248,16 @@ public class AnnotatedPropertyTest {
     // }
     @From(file = "tt/config/.testing.properties")
     public class TestClassMissingProperty {
-        @Option
-        String nope;
+        @Option(property = "fieldStr")
+        public String nope;
     }
     
 
     @Test
-    void TestClassMissingProperty() throws Exception {
+    void testClassMissingProperty() throws Exception {
         assertThrows(NoPropertyException.class, () -> {
             var obj = new TestClassMissingProperty ();
-            Properties.initializeProperties(obj);
-            System.out.println(obj.nope);
+            Properties.initialize(obj);
         });
     }
 }

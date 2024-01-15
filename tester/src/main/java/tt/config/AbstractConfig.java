@@ -1,6 +1,8 @@
 package tt.config;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import tt.config.exceptions.ConfigException;
 import tt.config.exceptions.ConversionException;
@@ -18,21 +20,42 @@ public abstract class AbstractConfig implements Config {
         return this.loadAndGet(key);
     }
 
+    private static final Set<String> BOOLEAN_TRUE = new HashSet<>();
+    private static final Set<String> BOOLEAN_FALSE = new HashSet<>();
+
+    static {
+        BOOLEAN_TRUE.add("true");
+        BOOLEAN_TRUE.add("t");
+        BOOLEAN_TRUE.add("yes");
+        BOOLEAN_TRUE.add("y");
+        BOOLEAN_TRUE.add("on");
+
+        BOOLEAN_FALSE.add("false");
+        BOOLEAN_FALSE.add("f");
+        BOOLEAN_FALSE.add("no");
+        BOOLEAN_FALSE.add("n");
+        BOOLEAN_FALSE.add("off");
+    }
+
     public Optional<Boolean> getBoolean(String key) throws ConfigException {
         Optional<String> option = this.loadAndGet(key);
         if (option.isEmpty()) {
             return Optional.empty();
         }
-        String initial = option.get();
-        if (initial.isBlank()) {
-            throw new ConversionException(this.getDescriptor(), key, option.get(), Boolean.class);
+
+        String initial = option.get().toLowerCase();
+        boolean checkTrue = AbstractConfig.BOOLEAN_TRUE.contains(initial);
+        boolean checkFalse = AbstractConfig.BOOLEAN_FALSE.contains(initial);
+
+        assert(!(checkFalse && checkTrue));
+        if (checkTrue) {
+            return Optional.of(true);
         }
-        try {
-            Boolean value = Boolean.valueOf(initial);
-            return Optional.of(value);
-        } catch (Throwable e) {
-            throw new ConversionException(this.getDescriptor(), key, option.get(), Boolean.class, e);
+        if (checkFalse) {
+            return Optional.of(false);
         }
+
+        throw new ConversionException(this.getDescriptor(), key, option.get(), Boolean.class);
     }
 
     public Optional<Integer> getInteger(String key) throws ConfigException {
