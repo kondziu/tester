@@ -56,6 +56,9 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import tt.config.annotations.exceptions.AnnotationException;
+import tt.config.exceptions.ConfigException;
+
 public class DynamicDirectoryTreeFrame extends JPanel implements ActionListener {
 	/**
 	 * 
@@ -475,7 +478,13 @@ public class DynamicDirectoryTreeFrame extends JPanel implements ActionListener 
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				createAndShowGUI(new ConfigurationStorage());
+				ConfigurationStorage config;
+				try {
+					config = new ConfigurationStorage();
+					createAndShowGUI(config);
+				} catch (IllegalAccessException | ConfigException | AnnotationException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}

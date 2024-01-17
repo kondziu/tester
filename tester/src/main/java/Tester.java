@@ -18,6 +18,8 @@
  */
 
 import pl.siek.tester.Main;
+import tt.config.annotations.exceptions.AnnotationException;
+import tt.config.exceptions.ConfigException;
 
 public class Tester {
 
@@ -30,7 +32,18 @@ public class Tester {
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new Main().setVisible(true);
+				try {
+					new Main().setVisible(true);
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ConfigException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (AnnotationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	}

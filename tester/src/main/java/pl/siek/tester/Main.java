@@ -63,6 +63,9 @@ import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
+import tt.config.annotations.exceptions.AnnotationException;
+import tt.config.exceptions.ConfigException;
+
 public class Main extends JFrame {
 	/**
 	 * Main interface for the Tester application. To be renamed later.
@@ -71,8 +74,8 @@ public class Main extends JFrame {
 	 * @version 2.0
 	 */
 	private static final long serialVersionUID = 9218503094273330361L;
-	public static final String VERSION = "2.5.1";
-	public static final String DATE = "3 Nov 2006 / 13 Aug 2009 / 18 Jan 2017";
+	public static final String VERSION = "2.5.2";
+	public static final String DATE = "3 Nov 2006 / 13 Aug 2009 / 18 Jan 2017 / 17 Jan 2024";
 	private static final String PATH_FILE_PATH = "files" + File.separator
 			+ "paths.txt";
 
@@ -88,7 +91,11 @@ public class Main extends JFrame {
 		System.out.println(new File(".").getAbsolutePath());
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new Main().setVisible(true);
+				try {
+					new Main().setVisible(true);
+				} catch (IllegalAccessException | ConfigException | AnnotationException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
@@ -172,8 +179,11 @@ public class Main extends JFrame {
 
 	private Log log;
 
-	/** Creates new form VisualInterface */
-	public Main() {
+	/** Creates new form VisualInterface 
+	 * @throws AnnotationException 
+	 * @throws ConfigException 
+	 * @throws IllegalAccessException */
+	public Main() throws IllegalAccessException, ConfigException, AnnotationException {
 		configurationAndSettings = new ConfigurationStorage(PATH_FILE_PATH);
 		comparison = new LineComparator(configurationAndSettings);
 		initComponents();
@@ -257,8 +267,11 @@ public class Main extends JFrame {
 	 * @version 2.0
 	 * @param ActionEvent
 	 *            evt
+	 * @throws AnnotationException 
+	 * @throws ConfigException 
+	 * @throws IllegalAccessException 
 	 */
-	private void configurationTestActionPerformed(ActionEvent evt) {
+	private void configurationTestActionPerformed(ActionEvent evt) throws IllegalAccessException, ConfigException, AnnotationException {
 		new ConfigurationFrame(configurationAndSettings);
 	}
 
@@ -405,8 +418,8 @@ public class Main extends JFrame {
 	 * @version 2.0
 	 */
 	private void incrementSoFarAndToGoCounters() {
-		soFar = new Integer(soFar.intValue() + 1);
-		toGo = new Integer(inputList.size());
+		soFar += 1;
+		toGo = inputList.size();
 		// firstAttempt=true;
 		refreshStats();
 	}
@@ -530,6 +543,94 @@ public class Main extends JFrame {
 		DynamicDirectoryTreeFrame.createAndShowGUI(configurationAndSettings);
 	}
 
+
+	private void showGoodAnswerDialog() {
+		String message = 
+			this.configurationAndSettings
+				.messageConfiguration
+					.getConfig(ConfigurationDefaultMessages.GOOD_WORK);
+
+		String title = 
+			this.configurationAndSettings
+				.messageConfiguration
+					.getConfig(ConfigurationDefaultMessages.GOOD_WORK_TITLE);
+
+		JOptionPane.showMessageDialog(
+				this,
+				message,
+				title,				
+				JOptionPane.OK_OPTION, 
+				this.goodAnswer
+		);
+	}
+
+	private void showBadAnswerDialog() {
+		String message = 
+			this.configurationAndSettings
+				.messageConfiguration
+					.getConfig(ConfigurationDefaultMessages.POOR_WORK);
+
+		String title =
+			this.configurationAndSettings
+				.messageConfiguration
+					.getConfig(ConfigurationDefaultMessages.POOR_WORK_TITLE);
+
+		JOptionPane.showMessageDialog(
+			this,
+			message,
+			title,
+			JOptionPane.OK_OPTION, 
+			this.poorAnswer
+		);
+	}
+
+	private void rejectAnswer() {
+		this.showBadAnswerDialog();
+
+		if (testMode) {
+			this.incrementSoFarAndToGoCounters();
+			this.loadNextQuestionAndSetButtons();
+			this.firstAttempt = true;
+			return;
+		} 
+		
+		if (firstAttempt) {
+			if (this.forcedRepetition) {
+				this.inputList.add(this.current);
+			} else {
+				this.redoList.add(this.current);
+			}
+
+			this.firstAttempt = false;
+			this.help.setEnabled(true);
+			this.helpMeButton.setEnabled(true);
+			this.incrementSoFarAndToGoCounters();
+		}
+	}
+
+	private void acceptAnswer() {
+		this.showGoodAnswerDialog();
+
+		if (!this.doneList.contains(this.current)) {
+			this.doneList.add(this.current);
+		}
+
+		if (this.firstAttempt) {
+			this.done += 1;
+			this.incrementSoFarAndToGoCounters();
+		}
+
+		this.loadNextQuestionAndSetButtons();
+		this.firstAttempt = true;
+	}
+
+	private void bypassAnswer() {
+		toGo = inputList.size();
+		refreshStats();
+		this.loadNextQuestionAndSetButtons();
+		this.firstAttempt = true;
+	}
+
 	/**
 	 * Evaluates the answer.
 	 * 
@@ -539,47 +640,38 @@ public class Main extends JFrame {
 	 *            evt
 	 */
 	private void okActionPerformed(ActionEvent evt) {
-		if (isCorrect(answer.getText(), current.answerList)) {
-			JOptionPane
-					.showMessageDialog(
-							this,
-							configurationAndSettings.messageConfiguration
-									.getConfig(ConfigurationDefaultMessages.GOOD_WORK),
-							configurationAndSettings.messageConfiguration
-									.getConfig(ConfigurationDefaultMessages.GOOD_WORK_TITLE),
-							JOptionPane.OK_OPTION, goodAnswer);
-			if (!doneList.contains(current))
-				doneList.add(current);
-			if (firstAttempt) {
-				done = new Integer(done.intValue() + 1);
-				incrementSoFarAndToGoCounters();
-			}
-			loadNextQuestionAndSetButtons();
-			firstAttempt = true;
-		} else {
-			JOptionPane
-					.showMessageDialog(
-							this,
-							configurationAndSettings.messageConfiguration
-									.getConfig(ConfigurationDefaultMessages.POOR_WORK),
-							configurationAndSettings.messageConfiguration
-									.getConfig(ConfigurationDefaultMessages.POOR_WORK_TITLE),
-							JOptionPane.OK_OPTION, poorAnswer);
-			if (testMode) {
-				incrementSoFarAndToGoCounters();
-				loadNextQuestionAndSetButtons();
-				firstAttempt = true;
-			} else if (firstAttempt) {
-				if (forcedRepetition)
-					inputList.add(current);
-				else
-					redoList.add(current);
-				firstAttempt = false;
-				help.setEnabled(true);
-				helpMeButton.setEnabled(true);
-				incrementSoFarAndToGoCounters();
-			}
+		String answerText = answer.getText();
+
+		// Correct answer		
+		if (this.isCorrect(answerText, current.answerList)) {
+			this.acceptAnswer();
+			return;
 		}
+
+		// Check for magic word that accepts the answer regardless of correctness
+		boolean acceptMagicWord = 
+			this.configurationAndSettings
+				.magicWord.accept
+					.equals(answerText);
+
+		if (acceptMagicWord) {
+			this.acceptAnswer();
+			return;
+		}
+
+		// Check for magic word that drops the question
+		boolean bypassMagicWord = 
+			this.configurationAndSettings
+				.magicWord.bypass
+					.equals(answerText);
+
+		if (bypassMagicWord) {
+			this.bypassAnswer();
+			return;
+		}
+		
+		// If the answer was not handled, it means it's incorrect
+		this.rejectAnswer();
 	}
 
 	/**
@@ -718,7 +810,12 @@ public class Main extends JFrame {
 		});
 		configuration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
+				try {
 				configurationTestActionPerformed(evt);
+				} catch(Exception e) {
+					// TODO figure out how to properly fail
+					throw new Error(e);
+				}
 			}
 		});
 		ok.addActionListener(new ActionListener() {

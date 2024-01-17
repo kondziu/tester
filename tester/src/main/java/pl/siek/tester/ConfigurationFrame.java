@@ -36,6 +36,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import tt.config.annotations.exceptions.AnnotationException;
+import tt.config.exceptions.ConfigException;
+
 public class ConfigurationFrame extends javax.swing.JFrame {
 
 	/**
@@ -51,8 +54,11 @@ public class ConfigurationFrame extends javax.swing.JFrame {
 	 * 
 	 * @param ConfigurationStorage
 	 *            inherited configuration
+	 * @throws AnnotationException 
+	 * @throws ConfigException 
+	 * @throws IllegalAccessException 
 	 */
-	ConfigurationFrame(ConfigurationStorage configurationAndSettings) {
+	ConfigurationFrame(ConfigurationStorage configurationAndSettings) throws IllegalAccessException, ConfigException, AnnotationException {
 		this.inheritedConfigurationAndSettings = configurationAndSettings;
 
 		this.configurationAndSettings = new ConfigurationStorage(new HashMap(
@@ -336,8 +342,11 @@ public class ConfigurationFrame extends javax.swing.JFrame {
 	 * @version 2.0
 	 * @param String
 	 *            file path to path configuration file
+	 * @throws AnnotationException 
+	 * @throws ConfigException 
+	 * @throws IllegalAccessException 
 	 */
-	public static void main(String args[]) {
+	public static void main(String args[]) throws IllegalAccessException, ConfigException, AnnotationException {
 		if (args.length > 0) {
 			ConfigurationStorage inherited = new ConfigurationStorage(args[0]);
 			ConfigurationFrame box = new ConfigurationFrame(inherited);

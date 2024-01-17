@@ -25,6 +25,10 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import tt.config.annotations.exceptions.AnnotationException;
+import tt.config.exceptions.ConfigException;
+import tt.options.MagicWord;
+
 public class ConfigurationStorage {
 	/**
 	 * Initial COnfiguration holds all configuration loaded from all
@@ -40,14 +44,20 @@ public class ConfigurationStorage {
 	public Configuration rulesConfiguration;
 	public Configuration errorConfiguration;
 
+	public final MagicWord magicWord;
+
 	/**
 	 * loads configuration as specified in file ".\config.txt"
 	 * 
 	 * @author K. Siek
 	 * @version 2.0
+	 * @throws AnnotationException 
+	 * @throws ConfigException 
+	 * @throws IllegalAccessException 
 	 */
-	public ConfigurationStorage() {
+	public ConfigurationStorage() throws IllegalAccessException, ConfigException, AnnotationException {
 		// this.loadConfigs("files/files.cfg");
+		this.magicWord = new MagicWord();
 		this.loadConfigs("config.txt");
 	}
 
@@ -58,8 +68,12 @@ public class ConfigurationStorage {
 	 * @version 2.0
 	 * @param String
 	 *            file path
+	 * @throws AnnotationException 
+	 * @throws ConfigException 
+	 * @throws IllegalAccessException 
 	 */
-	public ConfigurationStorage(String pathConfigurationFilePath) {
+	public ConfigurationStorage(String pathConfigurationFilePath) throws IllegalAccessException, ConfigException, AnnotationException {
+		this.magicWord = new MagicWord();
 		this.loadConfigs(pathConfigurationFilePath);
 	}
 
@@ -72,7 +86,6 @@ public class ConfigurationStorage {
 	 *            file path
 	 */
 	private int loadConfigs(String pathConfigurationFilePath) {
-
 		// PATH CONFIG
 		this.pathConfiguration = new Configuration(pathConfigurationFilePath);
 		try {
@@ -307,8 +320,13 @@ public class ConfigurationStorage {
 	 *            Object containning Strings rules, path, error, message, option
 	 *            (keys to UniversalConfiguration Objects) and regex (key to
 	 *            RegexConfiguration)
+	 * @throws AnnotationException 
+	 * @throws ConfigException 
+	 * @throws IllegalAccessException 
 	 */
-	public ConfigurationStorage(Map map) {
+	public ConfigurationStorage(Map map) throws IllegalAccessException, ConfigException, AnnotationException {
+		this.magicWord = new MagicWord();
+		
 		// Map hashMap = new HashMap();
 		pathConfiguration = (Configuration) map
 				.get(ConfigurationDefault.PATH_SECTION);
