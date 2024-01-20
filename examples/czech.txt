@@ -1,0 +1,5 @@
+Ahoj [] Hello
+Jak se máš? [] How are you? | How do you do?
+Jak se jmenuješ [] What's your name?
+Odkud jsi? [] Where are you from?
+
