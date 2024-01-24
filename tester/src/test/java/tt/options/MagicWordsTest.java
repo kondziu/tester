@@ -8,19 +8,19 @@ public class MagicWordsTest {
     
     @Test
     void testInit() throws Exception {
-        new MagicWord();
+        new MagicWords();
     }
 
     @Test
     void testAccept() throws Exception {
-        MagicWord magicWord = new MagicWord();
+        MagicWords magicWord = new MagicWords();
         var expected = "@mateur$";
         assertEquals(expected, magicWord.accept); 
     }
 
     @Test
     void testBypass() throws Exception {
-        MagicWord magicWord = new MagicWord();
+        MagicWords magicWord = new MagicWords();
         var expected = "!@#$%";
         assertEquals(expected, magicWord.bypass); 
     }

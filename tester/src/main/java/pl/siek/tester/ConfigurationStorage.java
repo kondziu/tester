@@ -27,7 +27,9 @@ import javax.swing.JOptionPane;
 
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.exceptions.ConfigException;
-import tt.options.MagicWord;
+import tt.options.KeyBindings;
+import tt.options.MagicWords;
+import tt.options.Mnemonics;
 
 public class ConfigurationStorage {
 	/**
@@ -44,7 +46,9 @@ public class ConfigurationStorage {
 	public Configuration rulesConfiguration;
 	public Configuration errorConfiguration;
 
-	public final MagicWord magicWord;
+	public final MagicWords magicWord;
+	public final KeyBindings keys;
+	public final Mnemonics mnemonics;
 
 	/**
 	 * loads configuration as specified in file ".\config.txt"
@@ -57,7 +61,9 @@ public class ConfigurationStorage {
 	 */
 	public ConfigurationStorage() throws IllegalAccessException, ConfigException, AnnotationException {
 		// this.loadConfigs("files/files.cfg");
-		this.magicWord = new MagicWord();
+		this.magicWord = new MagicWords();
+		this.keys = new KeyBindings();
+		this.mnemonics = new Mnemonics();
 		this.loadConfigs("config.txt");
 	}
 
@@ -73,7 +79,9 @@ public class ConfigurationStorage {
 	 * @throws IllegalAccessException 
 	 */
 	public ConfigurationStorage(String pathConfigurationFilePath) throws IllegalAccessException, ConfigException, AnnotationException {
-		this.magicWord = new MagicWord();
+		this.magicWord = new MagicWords();
+		this.keys = new KeyBindings();
+		this.mnemonics = new Mnemonics();
 		this.loadConfigs(pathConfigurationFilePath);
 	}
 
@@ -325,7 +333,9 @@ public class ConfigurationStorage {
 	 * @throws IllegalAccessException 
 	 */
 	public ConfigurationStorage(Map map) throws IllegalAccessException, ConfigException, AnnotationException {
-		this.magicWord = new MagicWord();
+		this.magicWord = new MagicWords();
+		this.keys = new KeyBindings();
+		this.mnemonics = new Mnemonics();
 		
 		// Map hashMap = new HashMap();
 		pathConfiguration = (Configuration) map

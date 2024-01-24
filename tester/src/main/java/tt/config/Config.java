@@ -2,6 +2,7 @@ package tt.config;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 import tt.config.exceptions.ConfigException;
 
@@ -12,6 +13,7 @@ public interface Config {
     Optional<String> getString(String key) throws ConfigException;
     Optional<Boolean> getBoolean(String key) throws ConfigException;
     Optional<Integer> getInteger(String key) throws ConfigException;
+    <T> Optional<T> getAndConvert(String key, Converter<String, Optional<T>> converter) throws ConfigException;
     String getOrFail(String key) throws ConfigException;
     String getStringOrFail(String key) throws ConfigException;
     Boolean getBooleanOrFail(String key) throws ConfigException;

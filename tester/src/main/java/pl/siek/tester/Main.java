@@ -43,11 +43,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -60,6 +63,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
@@ -121,7 +125,7 @@ public class Main extends JFrame {
 	private JLabel grade;
 	private JLabel gradeLabel;
 	private JPanel gradePanel;
-	private JMenuItem handbook;
+	// private JMenuItem handbook;
 	private JMenu help;
 	private JMenuItem helpMe;
 	private JButton helpMeButton;
@@ -282,10 +286,16 @@ public class Main extends JFrame {
 	 * @version 2.0
 	 */
 	public void constructComponents() {
+
+		HelpAction helpMeAction = new HelpAction();
+		this.helpMeButton = new JButton(helpMeAction);	
+		helpMeButton.getActionMap().put("helpMeAction", helpMeAction);
+		helpMeButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+        	helpMeAction.acceleratorKey, "helpMeAction");
+
 		ok = new JButton();
 		answer = new JTextField();
 		startTest = new JButton();
-		helpMeButton = new JButton();
 		gradePanel = new JPanel();
 		gradeLabel = new JLabel();
 		grade = new JLabel();
@@ -318,7 +328,7 @@ public class Main extends JFrame {
 		configuration = new JMenuItem();
 		dictionary = new JMenuItem();
 		help = new JMenu();
-		handbook = new JMenuItem();
+		// handbook = new JMenuItem();
 		about = new JMenuItem();
 		topPanel = new JPanel();
 		bottomPanel = new JPanel();
@@ -710,12 +720,10 @@ public class Main extends JFrame {
 	 */
 	private void refreshStats() {
 		if (showPercentage) {
-			percentage = new Double(((double) done.intValue() / (double) soFar
-					.intValue()) * 100);
+			percentage = ((double) done / (double) soFar) * 100;
 			if (percentage.isNaN() || percentage.isInfinite())
-				percentage = new Double(0D);
-			String perc = (new Integer(percentage.intValue())).toString();
-			gradeLabel.setText(perc + "%");
+				percentage = 0D;
+			gradeLabel.setText(percentage + "%");
 		}
 		points.setText(done.toString() + " / " + soFar.toString() + " / -"
 				+ toGo.toString());
@@ -786,6 +794,26 @@ public class Main extends JFrame {
 		setComponentTexts(false);
 	}
 
+	class HelpAction extends AbstractAction {
+
+		private KeyStroke acceleratorKey;
+
+		HelpAction() {
+			super("Help", null);
+			this.acceleratorKey =  KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK);
+			// KeyStroke.getKeyStroke("ctrl h");
+			// this.putValue(SHORT_DESCRIPTION, "Help me!");
+			this.putValue(ACCELERATOR_KEY, acceleratorKey);
+			// this.putValue(MNEMONIC_KEY, KeyEvent.VK_F1);
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			helpMeActionPerformed(e);
+		}
+	
+	}
+
 	/**
 	 * Sets actions to components.
 	 * 
@@ -828,11 +856,7 @@ public class Main extends JFrame {
 				helpMeActionPerformed(evt);
 			}
 		});
-		helpMeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				helpMeActionPerformed(evt);
-			}
-		});
+
 		open.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				openActionPerformed(evt);
@@ -926,11 +950,11 @@ public class Main extends JFrame {
 			}
 		});
 
-		handbook.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				handbookActionPerformed(evt);
-			}
-		});
+		// handbook.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		handbookActionPerformed(evt);
+		// 	}
+		// });
 		dictionary.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				dictionaryActionPerformed(evt);
@@ -1015,8 +1039,10 @@ public class Main extends JFrame {
 	private void setComponentMnemonics() {
 
 		startTest.setMnemonic(KeyEvent.VK_S);
-		helpMeButton.setMnemonic(KeyEvent.VK_F1);
+		// helpMeButton.setMnemonic(KeyEvent.VK_F1);
 		ok.setMnemonic(KeyEvent.VK_ENTER);
+
+		// helpMeButton.getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control H"));
 
 		file.setMnemonic(KeyEvent.VK_F);
 		open.setMnemonic(KeyEvent.VK_O);
@@ -1024,10 +1050,11 @@ public class Main extends JFrame {
 		manage.setMnemonic(KeyEvent.VK_M);
 		quit.setMnemonic(KeyEvent.VK_Q);
 
+
 		test.setMnemonic(KeyEvent.VK_T);
 		start.setMnemonic(KeyEvent.VK_S);
 		stop.setMnemonic(KeyEvent.VK_T);
-		helpMe.setMnemonic(KeyEvent.VK_H);
+		// helpMe.setMnemonic(KeyEvent.VK_H);
 		training.setMnemonic(KeyEvent.VK_M);
 		shuffle.setMnemonic(KeyEvent.VK_F);
 		reverse.setMnemonic(KeyEvent.VK_R);
@@ -1041,9 +1068,9 @@ public class Main extends JFrame {
 		configuration.setMnemonic(KeyEvent.VK_C);
 		reload.setMnemonic(KeyEvent.VK_R);
 
-		help.setMnemonic(KeyEvent.VK_H);
+		// help.setMnemonic(KeyEvent.VK_H);
 		dictionary.setMnemonic(KeyEvent.VK_D);
-		handbook.setMnemonic(KeyEvent.VK_H);
+		// handbook.setMnemonic(KeyEvent.VK_H);
 		about.setMnemonic(KeyEvent.VK_A);
 
 		// OK REACTS TO ENTER IN ANSWER FIELD
@@ -1061,6 +1088,9 @@ public class Main extends JFrame {
 					okActionPerformed(null);
 			}
 		});
+
+		// Do not treat CTRL+H as backspace
+		answer.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK), "none");
 	}
 
 	private void setComponentSizes() {
@@ -1186,8 +1216,8 @@ public class Main extends JFrame {
 				.getConfig(ConfigurationDefaultMessages.OK));
 		startTest.setText(configurationAndSettings.messageConfiguration
 				.getConfig(ConfigurationDefaultMessages.START_TEST));
-		helpMeButton.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.HELP_ME));
+		// helpMeButton.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.HELP_ME));
 		grade.setText(configurationAndSettings.messageConfiguration
 				.getConfig(ConfigurationDefaultMessages.SCORE));
 		file.setText(configurationAndSettings.messageConfiguration
@@ -1220,8 +1250,8 @@ public class Main extends JFrame {
 				.getConfig(ConfigurationDefaultMessages.CONFIGURATION));
 		statistics.setText(configurationAndSettings.messageConfiguration
 				.getConfig(ConfigurationDefaultMessages.STATISTICS));
-		handbook.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.HANDBOOK));
+		// handbook.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.HANDBOOK));
 		about.setText(configurationAndSettings.messageConfiguration
 				.getConfig(ConfigurationDefaultMessages.ABOUT));
 		help.setText(configurationAndSettings.messageConfiguration
@@ -1406,7 +1436,7 @@ public class Main extends JFrame {
 			menu.add(preferences);
 
 			// HELP MENU
-			help.add(handbook);
+			// help.add(handbook);
 			help.add(dictionary);
 			help.add(about);
 			menu.add(help);
@@ -1711,9 +1741,9 @@ public class Main extends JFrame {
 		doneList = new LinkedList();
 
 		// INIT STATS
-		done = new Integer(0);
-		soFar = new Integer(0);
-		toGo = new Integer(inputList.size());
+		done = 0;
+		soFar = 0;
+		toGo = inputList.size();
 		if (!inputList.isEmpty())
 			refreshStats();
 		else {

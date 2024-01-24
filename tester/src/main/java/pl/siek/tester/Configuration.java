@@ -39,8 +39,7 @@ public class Configuration {
 	 */
 	public String toString() {
 		String output = "";
-		for (Iterator i = configuration.keySet().iterator(); i.hasNext();) {
-			Object key = i.next();
+		for (Object key : configuration.keySet()) {
 			ConfigurationItem item = (ConfigurationItem) configuration.get(key);
 			output += item.toString() + "\n";
 		}
@@ -67,15 +66,9 @@ public class Configuration {
 	 */
 	public Map getConfig() {
 		HashMap map = new HashMap();
-		// System.out.println(configuration);
-		for (Iterator i = configuration.keySet().iterator(); i.hasNext();) {
-			Object key = i.next();
+		for (Object key : configuration.keySet()) {
 			ConfigurationItem item = (ConfigurationItem) configuration.get(key);
-			// ConfigurationItem k = (ConfigurationItem)item;
-			// ConfigurationItem item = (ConfigurationItem)
-			// configuration.get(key);
 			map.put(item.getKey(), item.getState());
-			// System.out.println("hello: \t\t"+item);
 		}
 		return map;
 	}

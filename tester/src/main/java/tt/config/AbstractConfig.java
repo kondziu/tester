@@ -72,6 +72,16 @@ public abstract class AbstractConfig implements Config {
         }
     }
 
+    public <T> Optional<T> getAndConvert(String key, Converter<String, Optional<T>> converter) throws ConfigException {
+        Optional<String> value = this.loadAndGet(key);
+        if (value.isEmpty()) {
+            return Optional.empty();
+        } 
+        String string = value.get();
+        assert(string != null);
+        return converter.apply(string);
+    }
+
     public String getOrFail(String key) throws ConfigException {
         var value = this.loadAndGet(key);
         if (value.isEmpty()) {
@@ -98,6 +108,14 @@ public abstract class AbstractConfig implements Config {
 
     public Integer getIntegerOrFail(String key) throws ConfigException {
         var value = this.getInteger(key);
+        if (value.isEmpty()) {
+            throw new NoPropertyException(this.getDescriptor(), key);
+        }
+        return value.get();
+    }
+
+    public <T> T getAndConvertOrFail(String key, Converter<String, Optional<T>> converter) throws ConfigException {
+        Optional<T> value = this.getAndConvert(key, converter);
         if (value.isEmpty()) {
             throw new NoPropertyException(this.getDescriptor(), key);
         }

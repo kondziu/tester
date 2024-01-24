@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.Function;
 
 import tt.config.exceptions.ConfigException;
 import tt.config.exceptions.ConfigLoadException;
