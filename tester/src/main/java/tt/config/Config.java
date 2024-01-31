@@ -2,11 +2,16 @@ package tt.config;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 
+import tt.config.converters.Converter;
 import tt.config.exceptions.ConfigException;
 
 public interface Config {
+    @FunctionalInterface
+    public interface ValueGetter<T> {
+        Optional<T> apply(Config config, String property) throws ConfigException;
+    }
+
     boolean isLoaded() throws ConfigException;
     void load() throws ConfigException;
     Optional<String> get(String key) throws ConfigException;
@@ -18,6 +23,7 @@ public interface Config {
     String getStringOrFail(String key) throws ConfigException;
     Boolean getBooleanOrFail(String key) throws ConfigException;
     Integer getIntegerOrFail(String key) throws ConfigException;
+    <T> T getAndConvertOrFail(String key, Converter<String, Optional<T>> converter) throws ConfigException;
     Set<String> keys() throws ConfigException;
     String getDescriptor();
 }

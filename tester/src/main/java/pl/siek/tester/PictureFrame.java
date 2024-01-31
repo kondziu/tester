@@ -69,8 +69,7 @@ public class PictureFrame extends javax.swing.JFrame {
 
 	protected PictureFrame(String path, int height, int width,
 			String pictureTitle, String errorTitle, String errorMsg) {
-		initiateComponents(path, new Integer(height), new Integer(width),
-				pictureTitle, errorTitle, errorMsg);
+		initiateComponents(path, height, width, pictureTitle, errorTitle, errorMsg);
 	}
 
 	/**

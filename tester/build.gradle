@@ -18,6 +18,20 @@ sourceSets {
         compileClasspath += sourceSets.main.output
         runtimeClasspath += sourceSets.main.output
     }
+    test {
+        resources {
+            srcDir "test"
+        }
+        java {
+            srcDirs = ['src/main/java', 'src/test/java']
+        }
+    }
+}
+
+task printClasspath {
+    doLast {
+        configurations.testRuntime.each { println it }
+    }
 }
 
 application {

@@ -12,6 +12,9 @@ import tt.config.annotations.exceptions.FileNotFoundException;
 import tt.config.annotations.exceptions.NotAnnotatedException;
 import tt.config.exceptions.ConversionException;
 import tt.config.exceptions.NoPropertyException;
+import tt.config.helpers.DoubleIdentity;
+import tt.config.helpers.IntegerIdentity;
+import tt.config.helpers.StringToUppercase;
 
 public class AnnotatedPropertyTest {
 
@@ -36,7 +39,7 @@ public class AnnotatedPropertyTest {
         });
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassEmpty implements Properties { }
 
     @Test
@@ -45,7 +48,7 @@ public class AnnotatedPropertyTest {
         obj.initializeProperties();
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassStringField implements Properties {
         @Option
         public String fieldStr;
@@ -58,7 +61,7 @@ public class AnnotatedPropertyTest {
         assertEquals("Hello, world!", obj.fieldStr);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassStringRenamedField implements Properties {
         @Option(property = "field_str")
         public String str;
@@ -71,7 +74,7 @@ public class AnnotatedPropertyTest {
         assertEquals("Hello, world!", obj.str);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassIntegerField implements Properties {
         @Option
         public Integer fieldInt;
@@ -84,7 +87,7 @@ public class AnnotatedPropertyTest {
         assertEquals(42, obj.fieldInt);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassIntegerRenamedField implements Properties {
         @Option(property = "field_int")
         public Integer i;
@@ -97,7 +100,7 @@ public class AnnotatedPropertyTest {
         assertEquals(42, obj.i);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassIntegerPrimitiveField implements Properties {
         @Option
         public int fieldInt;
@@ -110,7 +113,7 @@ public class AnnotatedPropertyTest {
         assertEquals(42, obj.fieldInt);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassIntegerRenamedPrimitiveField implements Properties {
         @Option(property = "field_int")
         public int i;
@@ -123,7 +126,7 @@ public class AnnotatedPropertyTest {
         assertEquals(42, obj.i);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassBooleanField implements Properties {
         @Option
         public Boolean fieldBool;
@@ -136,7 +139,7 @@ public class AnnotatedPropertyTest {
         assertEquals(true, obj.fieldBool);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassBooleanRenamedField implements Properties {
         @Option(property = "field_bool")
         public Boolean b;
@@ -150,7 +153,7 @@ public class AnnotatedPropertyTest {
     }
 
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassBooleanPrimitiveField implements Properties {
         @Option
         public boolean fieldBool;
@@ -163,7 +166,7 @@ public class AnnotatedPropertyTest {
         assertEquals(true, obj.fieldBool);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassBooleanRenamedPrimitiveField implements Properties {
         @Option(property = "field_bool")
         public boolean b;
@@ -176,7 +179,7 @@ public class AnnotatedPropertyTest {
         assertEquals(true, obj.b);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassMix implements Properties {
         @Option
         public Boolean fieldBool;
@@ -209,7 +212,7 @@ public class AnnotatedPropertyTest {
         assertEquals("Hello, world!", obj.s);
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassWrongTypeInt implements Properties {
         @Option
         public int fieldStr;
@@ -220,12 +223,10 @@ public class AnnotatedPropertyTest {
         assertThrows(ConversionException.class, () -> {
             var obj = new TestClassWrongTypeInt ();
             obj.initializeProperties();
-            // Integer s = obj.fieldStr;
-            // System.out.println(s);
         });
     }
 
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassWrongTypeBoolean implements Properties {
         @Option
         public boolean fieldStr;
@@ -239,13 +240,7 @@ public class AnnotatedPropertyTest {
         });
     }
 
-    // @Test
-    // void missingPropertyOrFail() throws Exception {
-    //     assertThrows(NoPropertyException.class, () -> {
-    //         config.getOrFail("sirNotAppearingInThisMovie");        
-    //     });
-    // }
-    @From(file = "tt/config/.testing.properties")
+    @From(file = "tt/config/testing.properties")
     public class TestClassMissingProperty implements Properties {
         @Option(property = "fieldStr")
         public String nope;
@@ -258,5 +253,44 @@ public class AnnotatedPropertyTest {
             var obj = new TestClassMissingProperty ();
             obj.initializeProperties();
         });
+    }  
+
+    @From(file = "tt/config/testing.properties")
+    public class TestClassCustomStringToString implements Properties {
+        @Option(converter = StringToUppercase.class)
+        public String fieldStr;
+    }
+
+    @Test
+    void testClassCustomStringToString() throws Exception {
+        var obj = new TestClassCustomStringToString ();
+        obj.initializeProperties();
+        assertEquals("HELLO, WORLD!", obj.fieldStr);
+    }
+
+    @From(file = "tt/config/testing.properties")
+    public class TestClassCustomStringToDouble implements Properties {
+        @Option(converter = DoubleIdentity.class)
+        public Double fieldFp;
+    }
+
+    @Test
+    void testClassCustomStringToDouble() throws Exception {
+        var obj = new TestClassCustomStringToDouble ();
+        obj.initializeProperties();
+        assertEquals(3.14159, obj.fieldFp);
+    }
+
+    @From(file = "tt/config/testing.properties")
+    public class TestClassCustomStringToInteger implements Properties {
+        @Option(converter = IntegerIdentity.class)
+        public Integer fieldInt;
+    }
+
+    @Test
+    void testClassCustomStringToInteger() throws Exception {
+        var obj = new TestClassCustomStringToInteger ();
+        obj.initializeProperties();
+        assertEquals(42, obj.fieldInt);
     }
 }

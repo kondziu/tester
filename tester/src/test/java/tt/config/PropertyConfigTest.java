@@ -12,7 +12,7 @@ import tt.config.exceptions.NoPropertyException;
 
 public class PropertyConfigTest {
 
-    private static final Config config = new PropertyConfig("tt/config/.testing.properties");
+    private static final Config config = new PropertyConfig("tt/config/testing.properties");
     
     @Test
     void stringProperty() throws Exception {
