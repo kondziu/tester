@@ -69,6 +69,7 @@ import javax.swing.border.BevelBorder;
 
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.exceptions.ConfigException;
+import tt.options.KeyBindings;
 
 public class Main extends JFrame {
 	/**
@@ -290,8 +291,10 @@ public class Main extends JFrame {
 		HelpAction helpMeAction = new HelpAction();
 		this.helpMeButton = new JButton(helpMeAction);	
 		helpMeButton.getActionMap().put("helpMeAction", helpMeAction);
-		helpMeButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-        	helpMeAction.acceleratorKey, "helpMeAction");
+		this.configurationAndSettings.keys.help.ifPresent(stroke -> 
+			helpMeButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(stroke, "helpMeAction")
+		);
+		helpMeAction.putValue(Action.SHORT_DESCRIPTION, "Help me!");
 
 		ok = new JButton();
 		answer = new JTextField();
@@ -795,23 +798,13 @@ public class Main extends JFrame {
 	}
 
 	class HelpAction extends AbstractAction {
-
-		private KeyStroke acceleratorKey;
-
-		HelpAction() {
+		HelpAction(){
 			super("Help", null);
-			this.acceleratorKey =  KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK);
-			// KeyStroke.getKeyStroke("ctrl h");
-			// this.putValue(SHORT_DESCRIPTION, "Help me!");
-			this.putValue(ACCELERATOR_KEY, acceleratorKey);
-			// this.putValue(MNEMONIC_KEY, KeyEvent.VK_F1);
 		}
-		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			helpMeActionPerformed(e);
 		}
-	
 	}
 
 	/**

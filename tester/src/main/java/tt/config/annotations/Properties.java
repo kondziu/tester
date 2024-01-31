@@ -18,11 +18,9 @@ import tt.config.PropertyConfig;
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.annotations.exceptions.CannotConvertIntoTypeException;
 import tt.config.annotations.exceptions.CannotCreateConverterInstanceException;
-import tt.config.annotations.exceptions.Converter;
 import tt.config.annotations.exceptions.FileNotFoundException;
 import tt.config.annotations.exceptions.NoGetterException;
 import tt.config.annotations.exceptions.NoSetterException;
-import tt.config.annotations.exceptions.None;
 import tt.config.annotations.exceptions.NotAConverterException;
 import tt.config.annotations.exceptions.NotAnnotatedException;
 import tt.config.annotations.exceptions.UnsupportedFieldTypeException;
@@ -93,7 +91,7 @@ public interface Properties {
 
     default <T> Optional<Converter<String, T>> extractConverterFromField(Field field) throws AnnotationException {
         Option annotation = field.getAnnotation(Option.class);
-        Type fieldType = field.getType();
+        Type fieldType = field.getGenericType();
         Class<?> cls = annotation.converter();
 
         if (cls == None.class) {
@@ -115,10 +113,13 @@ public interface Properties {
         Type from = generics[0];
         Type into = generics[1];
 
+        System.err.println("into: " + into);
+        System.err.println("fieldType: " + fieldType);
+
         assert (from == String.class);
         assert (into instanceof Class<?>);
 
-        if (into != fieldType) {
+        if (!into.equals(fieldType)) {
             throw new CannotConvertIntoTypeException(this.getClass(), field, fieldType, cls, into);
         }
 

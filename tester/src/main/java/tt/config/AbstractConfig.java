@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import tt.config.annotations.exceptions.Converter;
+import tt.config.annotations.Converter;
 import tt.config.exceptions.ConfigException;
 import tt.config.exceptions.ConversionException;
 import tt.config.exceptions.NoPropertyException;

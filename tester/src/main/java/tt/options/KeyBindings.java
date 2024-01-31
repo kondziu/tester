@@ -4,6 +4,11 @@ import tt.config.annotations.Option;
 import tt.config.annotations.Properties;
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.exceptions.ConfigException;
+import tt.gui.KeyStrokeConvereter;
+
+import java.util.Optional;
+
+import javax.swing.KeyStroke;
 
 import tt.config.annotations.From;
 
@@ -15,50 +20,50 @@ public class KeyBindings implements Properties {
     }
 
     // Show help for current question
-    @Option
-    public String help;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> help;
 
     // Evaluate answer
-    @Option
-    public String ok;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> ok;
 
     // Open test file from disk
-    @Option
-    public String open;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> open;
 
     // Open test file from internet
-    @Option
-    public String internet;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> internet;
 
     // Open test file manager tool
-    @Option
-    public String manage;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> manage;
 
     // Quit program
-    @Option
-    public String quit;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> quit;
 
     // Start test
-    @Option
-    public String start;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> start;
 
     // Stop test
-    @Option
-    public String stop;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> stop;
 
     // Set UI language
-    @Option
-    public String language;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> language;
 
     // Open configuration
-    @Option
-    public String configuration;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> configuration;
 
     // Reload program (to reload configuration after changes)
-    @Option
-    public String reload;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> reload;
 
     // Show dictionary
-    @Option
-    public String dictionary;
+    @Option(converter = KeyStrokeConvereter.class)
+    public Optional<KeyStroke> dictionary;
 }

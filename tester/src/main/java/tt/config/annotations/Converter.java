@@ -1,4 +1,4 @@
-package tt.config.annotations.exceptions;
+package tt.config.annotations;
 
 import tt.config.exceptions.ConfigException;
 

@@ -3,9 +3,6 @@ package tt.config.annotations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import tt.config.annotations.exceptions.None;
-
 import java.lang.annotation.ElementType;
 
 @Retention(RetentionPolicy.RUNTIME)
