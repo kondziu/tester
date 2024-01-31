@@ -1,4 +1,4 @@
-package tt.config.converters;
+package tt.config.annotations.exceptions;
 
 import tt.config.exceptions.ConfigException;
 

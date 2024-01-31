@@ -1,6 +1,6 @@
 package tt.config.helpers;
 
-import tt.config.converters.Converter;
+import tt.config.annotations.exceptions.Converter;
 import tt.config.exceptions.ConfigException;
 
 public class StringIdentity implements Converter<String, String> {

@@ -18,14 +18,14 @@ import tt.config.PropertyConfig;
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.annotations.exceptions.CannotConvertIntoTypeException;
 import tt.config.annotations.exceptions.CannotCreateConverterInstanceException;
+import tt.config.annotations.exceptions.Converter;
 import tt.config.annotations.exceptions.FileNotFoundException;
 import tt.config.annotations.exceptions.NoGetterException;
 import tt.config.annotations.exceptions.NoSetterException;
+import tt.config.annotations.exceptions.None;
 import tt.config.annotations.exceptions.NotAConverterException;
 import tt.config.annotations.exceptions.NotAnnotatedException;
 import tt.config.annotations.exceptions.UnsupportedFieldTypeException;
-import tt.config.converters.Converter;
-import tt.config.converters.None;
 import tt.config.exceptions.ConfigException;
 
 public interface Properties {

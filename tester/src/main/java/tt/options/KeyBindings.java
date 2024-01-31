@@ -5,8 +5,6 @@ import tt.config.annotations.Properties;
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.exceptions.ConfigException;
 
-import java.util.Set;
-
 import tt.config.annotations.From;
 
 @From(file="tt/options/key_bindings.properties")

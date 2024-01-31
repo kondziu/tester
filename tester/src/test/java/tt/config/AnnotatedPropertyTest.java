@@ -8,7 +8,10 @@ import org.junit.jupiter.api.Test;
 import tt.config.annotations.From;
 import tt.config.annotations.Properties;
 import tt.config.annotations.Option;
+import tt.config.annotations.exceptions.CannotConvertIntoTypeException;
+import tt.config.annotations.exceptions.CannotCreateConverterInstanceException;
 import tt.config.annotations.exceptions.FileNotFoundException;
+import tt.config.annotations.exceptions.NotAConverterException;
 import tt.config.annotations.exceptions.NotAnnotatedException;
 import tt.config.exceptions.ConversionException;
 import tt.config.exceptions.NoPropertyException;
@@ -245,7 +248,6 @@ public class AnnotatedPropertyTest {
         @Option(property = "fieldStr")
         public String nope;
     }
-    
 
     @Test
     void testClassMissingProperty() throws Exception {
@@ -292,5 +294,33 @@ public class AnnotatedPropertyTest {
         var obj = new TestClassCustomStringToInteger ();
         obj.initializeProperties();
         assertEquals(42, obj.fieldInt);
+    }
+
+    @From(file = "tt/config/testing.properties")
+    public class TestClassCustomStringToDoubleButInteger implements Properties {
+        @Option(converter = IntegerIdentity.class)
+        public Double fieldInt;
+    }
+
+    @Test
+    void testClassCustomStringToDoubleButInteger() throws Exception {
+        assertThrows(CannotConvertIntoTypeException.class, () -> {
+            var obj = new TestClassCustomStringToDoubleButInteger ();
+            obj.initializeProperties();
+        });
+    }
+
+    @From(file = "tt/config/testing.properties")
+    public class TestClassCustomWrongConverter implements Properties {
+        @Option(converter = Double.class)
+        public Double fieldFp;
+    }
+
+    @Test
+    void testClassCustomWrongConverter () throws Exception {
+        assertThrows(NotAConverterException.class, () -> {
+            var obj = new TestClassCustomWrongConverter  ();
+            obj.initializeProperties();
+        });
     }
 }

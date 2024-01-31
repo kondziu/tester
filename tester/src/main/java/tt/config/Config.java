@@ -3,7 +3,7 @@ package tt.config;
 import java.util.Optional;
 import java.util.Set;
 
-import tt.config.converters.Converter;
+import tt.config.annotations.exceptions.Converter;
 import tt.config.exceptions.ConfigException;
 
 public interface Config {
