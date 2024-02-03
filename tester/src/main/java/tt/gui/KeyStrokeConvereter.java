@@ -13,7 +13,7 @@ public class KeyStrokeConvereter implements Converter<String, Optional<KeyStroke
     @Override
     public Optional<KeyStroke> apply(String string) throws ConfigException {
         if (string.isBlank()) {
-            return Optional.empty(); // TODO do not return null
+            return Optional.empty();
         }
 
         var stroke = KeyStroke.getKeyStroke(string);

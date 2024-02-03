@@ -91,12 +91,12 @@ public class ConfigurationItem {
 		return state;
 	}
 
-	public Object getKey() {
+	public String getKey() {
 		// if(key==null)System.out.println(state);
 		return ConfigurationParser.replace(key.toString());
 	}
 
-	public boolean setKey(Object key) {
+	public boolean setKey(String key) {
 		this.key = key;
 		return true;
 	}

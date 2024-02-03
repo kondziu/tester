@@ -16,7 +16,7 @@
  *
  * Copyright 2013 Konrad Siek <konrad.siek@gmail.com>
  */
- 
+
 package pl.siek.tester;
 
 import java.io.IOException;
@@ -49,15 +49,16 @@ public class ConfigurationStorage {
 	public final MagicWords magicWord;
 	public final KeyBindings keys;
 	public final Mnemonics mnemonics;
+	// public final Gui gui;
 
 	/**
 	 * loads configuration as specified in file ".\config.txt"
 	 * 
 	 * @author K. Siek
 	 * @version 2.0
-	 * @throws AnnotationException 
-	 * @throws ConfigException 
-	 * @throws IllegalAccessException 
+	 * @throws AnnotationException
+	 * @throws ConfigException
+	 * @throws IllegalAccessException
 	 */
 	public ConfigurationStorage() throws IllegalAccessException, ConfigException, AnnotationException {
 		// this.loadConfigs("files/files.cfg");
@@ -73,12 +74,13 @@ public class ConfigurationStorage {
 	 * @author K. Siek
 	 * @version 2.0
 	 * @param String
-	 *            file path
-	 * @throws AnnotationException 
-	 * @throws ConfigException 
-	 * @throws IllegalAccessException 
+	 *               file path
+	 * @throws AnnotationException
+	 * @throws ConfigException
+	 * @throws IllegalAccessException
 	 */
-	public ConfigurationStorage(String pathConfigurationFilePath) throws IllegalAccessException, ConfigException, AnnotationException {
+	public ConfigurationStorage(String pathConfigurationFilePath)
+			throws IllegalAccessException, ConfigException, AnnotationException {
 		this.magicWord = new MagicWords();
 		this.keys = new KeyBindings();
 		this.mnemonics = new Mnemonics();
@@ -91,7 +93,7 @@ public class ConfigurationStorage {
 	 * @author K. Siek
 	 * @version 2.0
 	 * @param String
-	 *            file path
+	 *               file path
 	 */
 	private int loadConfigs(String pathConfigurationFilePath) {
 		// PATH CONFIG
@@ -102,7 +104,7 @@ public class ConfigurationStorage {
 					.fillHoles(pathConfiguration.getDetailedConfig(),
 							ConfigurationDefaultPath.getDefaultConfig()));
 		} catch (Exception e) {
-			Map tempErrors = ConfigurationDefaultErrors.getDefaultConfig();
+			var tempErrors = ConfigurationDefaultErrors.getDefaultConfig();
 			JOptionPane
 					.showMessageDialog(
 							null,
@@ -125,7 +127,8 @@ public class ConfigurationStorage {
 											.getState(),
 							(String) ((ConfigurationItem) tempErrors
 									.get(ConfigurationDefaultErrors.CONFIGURATION_FILE_ERROR))
-									.getState(), JOptionPane.ERROR_MESSAGE);
+									.getState(),
+							JOptionPane.ERROR_MESSAGE);
 			this.pathConfiguration = new Configuration(ConfigurationDefaultPath
 					.getDefaultConfig());
 		}
@@ -306,8 +309,8 @@ public class ConfigurationStorage {
 		return 0;
 	}
 
-	public Map configToMap() {
-		Map hashMap = new HashMap();
+	public Map<String, Configuration> configToMap() {
+		var hashMap = new HashMap<String, Configuration>();
 
 		hashMap.put(ConfigurationDefault.PATH_SECTION, pathConfiguration);
 		hashMap.put(ConfigurationDefault.ERROR_SECTION, errorConfiguration);
@@ -328,28 +331,23 @@ public class ConfigurationStorage {
 	 *            Object containning Strings rules, path, error, message, option
 	 *            (keys to UniversalConfiguration Objects) and regex (key to
 	 *            RegexConfiguration)
-	 * @throws AnnotationException 
-	 * @throws ConfigException 
-	 * @throws IllegalAccessException 
+	 * @throws AnnotationException
+	 * @throws ConfigException
+	 * @throws IllegalAccessException
 	 */
-	public ConfigurationStorage(Map map) throws IllegalAccessException, ConfigException, AnnotationException {
+	public ConfigurationStorage(Map<String, Configuration> map)
+			throws IllegalAccessException, ConfigException, AnnotationException {
 		this.magicWord = new MagicWords();
 		this.keys = new KeyBindings();
 		this.mnemonics = new Mnemonics();
-		
+
 		// Map hashMap = new HashMap();
-		pathConfiguration = (Configuration) map
-				.get(ConfigurationDefault.PATH_SECTION);
-		errorConfiguration = (Configuration) map
-				.get(ConfigurationDefault.ERROR_SECTION);
-		messageConfiguration = (Configuration) map
-				.get(ConfigurationDefault.MESSAGE_SECTION);
-		regexConfiguration = (Configuration) map
-				.get(ConfigurationDefault.REGEX_SECTION);
-		optionConfiguration = (Configuration) map
-				.get(ConfigurationDefault.OPTION_SECTION);
-		rulesConfiguration = (Configuration) map
-				.get(ConfigurationDefault.RULES_SECTION);
+		pathConfiguration = map.get(ConfigurationDefault.PATH_SECTION);
+		errorConfiguration = map.get(ConfigurationDefault.ERROR_SECTION);
+		messageConfiguration = map.get(ConfigurationDefault.MESSAGE_SECTION);
+		regexConfiguration = map.get(ConfigurationDefault.REGEX_SECTION);
+		optionConfiguration = map.get(ConfigurationDefault.OPTION_SECTION);
+		rulesConfiguration = map.get(ConfigurationDefault.RULES_SECTION);
 	}
 
 	public void saveToFile() throws IOException, NullPointerException {

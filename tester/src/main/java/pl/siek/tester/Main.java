@@ -70,6 +70,7 @@ import javax.swing.border.BevelBorder;
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.exceptions.ConfigException;
 import tt.options.KeyBindings;
+import tt.gui.GuiElement;
 
 public class Main extends JFrame {
 	/**
@@ -288,13 +289,12 @@ public class Main extends JFrame {
 	 */
 	public void constructComponents() {
 
-		HelpAction helpMeAction = new HelpAction();
-		this.helpMeButton = new JButton(helpMeAction);	
-		helpMeButton.getActionMap().put("helpMeAction", helpMeAction);
-		this.configurationAndSettings.keys.help.ifPresent(stroke -> 
-			helpMeButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(stroke, "helpMeAction")
+		this.helpMeButton = GuiElement.button(
+			this.configurationAndSettings.messageConfiguration.getConfig(ConfigurationDefaultMessages.HELP_ME), 
+			"TODO", // this.configurationAndSettings.gui.helpDescription,
+			this.configurationAndSettings.keys.help, 
+			(e) -> this.helpMeActionPerformed(e)
 		);
-		helpMeAction.putValue(Action.SHORT_DESCRIPTION, "Help me!");
 
 		ok = new JButton();
 		answer = new JTextField();
@@ -797,16 +797,6 @@ public class Main extends JFrame {
 		setComponentTexts(false);
 	}
 
-	class HelpAction extends AbstractAction {
-		HelpAction(){
-			super("Help", null);
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			helpMeActionPerformed(e);
-		}
-	}
-
 	/**
 	 * Sets actions to components.
 	 * 
@@ -979,6 +969,7 @@ public class Main extends JFrame {
 		new DictionaryFrame(configurationAndSettings);
 	}
 
+	@SuppressWarnings("unused")
 	private void handbookActionPerformed(ActionEvent evt) {
 		runMedia(configurationAndSettings.pathConfiguration
 				.getConfig(ConfigurationDefaultPath.HANDBOOK));
@@ -1032,7 +1023,7 @@ public class Main extends JFrame {
 	private void setComponentMnemonics() {
 
 		startTest.setMnemonic(KeyEvent.VK_S);
-		// helpMeButton.setMnemonic(KeyEvent.VK_F1);
+		//helpMeButton.setMnemonic(KeyEvent.VK_F1);
 		ok.setMnemonic(KeyEvent.VK_ENTER);
 
 		// helpMeButton.getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control H"));

@@ -1,6 +1,7 @@
 package tt.config.annotations;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -9,6 +10,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,6 +20,7 @@ import tt.config.PropertyConfig;
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.annotations.exceptions.CannotConvertIntoTypeException;
 import tt.config.annotations.exceptions.CannotCreateConverterInstanceException;
+import tt.config.annotations.exceptions.CannotSetFieldValueException;
 import tt.config.annotations.exceptions.FileNotFoundException;
 import tt.config.annotations.exceptions.NoGetterException;
 import tt.config.annotations.exceptions.NoSetterException;
@@ -79,17 +82,21 @@ public interface Properties {
                 .collect(Collectors.toList());
     }
 
-    default String extractPropertyNameFromField(Field field) {
+    default String extractPropertyNameFromField(PropertyPath path, Field field) {
         Option annotation = field.getAnnotation(Option.class);
         String property = annotation.property();
+
         if (property.isEmpty()) {
             String name = field.getName();
             property = CaseAwareString.fromCamelCase(name).intoSnakeCase(false);
         }
-        return property;
+
+        PropertyPath fullPath = path.concat(property);
+        return fullPath.toString();
     }
 
     default <T> Optional<Converter<String, T>> extractConverterFromField(Field field) throws AnnotationException {
+
         Option annotation = field.getAnnotation(Option.class);
         Type fieldType = field.getGenericType();
         Class<?> cls = annotation.converter();
@@ -113,8 +120,8 @@ public interface Properties {
         Type from = generics[0];
         Type into = generics[1];
 
-        System.err.println("into: " + into);
-        System.err.println("fieldType: " + fieldType);
+        // System.err.println("into: " + into);
+        // System.err.println("fieldType: " + fieldType);
 
         assert (from == String.class);
         assert (into instanceof Class<?>);
@@ -128,13 +135,14 @@ public interface Properties {
             Converter<String, T> converter = (Converter<String, T>) cls.getConstructor().newInstance();
             return Optional.of(converter);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                | InvocationTargetException | NoSuchMethodException | SecurityException | ClassCastException e) {
             throw new CannotCreateConverterInstanceException(this.getClass(), field, fieldType, cls, e);
         }
     }
 
     default <T> void setFieldValueFromConfigDefault(Config config, Field field, String property)
-            throws ConfigException, AnnotationException, IllegalAccessException {
+            throws ConfigException, AnnotationException {
+
         Class<?> type = field.getType();
         if (!Properties.setters.containsKey(type)) {
             throw new UnsupportedFieldTypeException(this.getClass(), field, type, Option.class, setters.keySet());
@@ -151,23 +159,79 @@ public interface Properties {
         }
 
         Object value = getter.apply(config, property);
-        setter.apply(field, this, value);
+        try {
+            setter.apply(field, this, value);
+        } catch (IllegalAccessException e) {
+            throw new CannotSetFieldValueException(this.getClass(), field, Option.class, type, e);
+        }
     }
 
     default <T> void setFieldValueFromConfigCustom(Config config, Field field, String property,
-            Converter<String, ?> converter) throws ConfigException, AnnotationException, IllegalAccessException {
+            Converter<String, ?> converter) throws ConfigException, AnnotationException {
+
         String value = config.getOrFail(property);
         Object object = converter.apply(value);
-        field.set(this, object);
+        
+        try {
+            field.set(this, object);
+        } catch (IllegalAccessException e) {
+            throw new CannotSetFieldValueException(this.getClass(), field, Option.class, field.getType(), e);
+        }
     }
 
-    default <T> void setFieldValueFromConfig(Config config, Field field)
-            throws ConfigException, AnnotationException, IllegalAccessException {
+    default boolean isFieldANestedPropertyObject(Field field) {
+        return Stream.of(field.getType().getInterfaces()).anyMatch((Class<?> i) -> 
+            Properties.class.equals(i)
+        );
+    }
 
-        String property = this.extractPropertyNameFromField(field);
+    @SuppressWarnings("unchecked")
+    default <T> void setFieldValueFromNestedPropertyObject(String filePath, PropertyPath propertyPath, Config config, Field field, String property) throws ConfigException, AnnotationException {
+        Constructor<Properties> constructor;
+        try {
+            constructor = (Constructor<Properties>) field.getType().getConstructor();
+        } catch (ClassCastException | NoSuchMethodException | SecurityException e) {
+            throw new UnsupportedOperationException("WIP2"); // TODO exception
+        }
+        
+        Properties nestedProperties;
+        try {
+            nestedProperties = constructor.newInstance();
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new UnsupportedOperationException("WIP3"); // TODO exception
+        }
+
+        String propertyName = this.extractPropertyNameFromField(propertyPath, field);
+        PropertyPath nextedPropertyPath = propertyPath.concat(propertyName);
+        nestedProperties.initializeProperties(filePath, nextedPropertyPath);
+
+        try {
+            field.set(this, nestedProperties);
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            throw new UnsupportedOperationException("WIP4"); // TODO exception
+        }
+    }
+
+    // default <T> T ffumbshional(Supplier<T> f, String s, Object... spaceName) {
+    //     try {
+    //         return f.get();
+    //     } catch (Exception e) {
+    //         throw new UnsupportedOperationException(String.format(s, spaceName), e);
+    //     }
+    // }
+
+    default <T> void setFieldValueFromConfig(String filePath, PropertyPath propertyPath, Config config, PropertyPath path, Field field)
+            throws ConfigException, AnnotationException {
+
+        String property = this.extractPropertyNameFromField(path, field);
         var converterOption = this.extractConverterFromField(field);
 
-        if (converterOption.isEmpty()) {
+        if (this.isFieldANestedPropertyObject(field)) {
+            if (!converterOption.isEmpty()) {
+                throw new UnsupportedOperationException("WIP1"); // TODO exception
+            }
+            this.setFieldValueFromNestedPropertyObject(filePath, propertyPath, config, field, property);
+        } else if (converterOption.isEmpty()) {
             this.setFieldValueFromConfigDefault(config, field, property);
         } else {
             var converter = converterOption.get();
@@ -175,13 +239,16 @@ public interface Properties {
         }
     }
 
-    default void initializeProperties() throws ConfigException, AnnotationException, IllegalAccessException {
+    default void initializeProperties() throws ConfigException, AnnotationException {
         String file = this.extractPropertiesFilePath();
-        Config config = new PropertyConfig(file);
-        List<Field> fields = this.extractOptionAnnotatedFields();
+        this.initializeProperties(file, PropertyPath.top());
+    }
 
+    default void initializeProperties(String filePath, PropertyPath propertyPath) throws ConfigException, AnnotationException {
+        Config config = new PropertyConfig(filePath);
+        List<Field> fields = this.extractOptionAnnotatedFields();
         for (Field field : fields) {
-            this.setFieldValueFromConfig(config, field);
+            this.setFieldValueFromConfig(filePath, propertyPath, config, propertyPath, field);
         }
     }
 }

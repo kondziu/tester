@@ -1,4 +1,4 @@
-package tt.config;
+package tt.config.annotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,7 +19,7 @@ import tt.config.helpers.DoubleIdentity;
 import tt.config.helpers.IntegerIdentity;
 import tt.config.helpers.StringToUppercase;
 
-public class AnnotatedPropertyTest {
+public class PropertiesTest {
 
     public class TestClassNotAnnotated implements Properties {}
 
@@ -322,5 +322,35 @@ public class AnnotatedPropertyTest {
             var obj = new TestClassCustomWrongConverter  ();
             obj.initializeProperties();
         });
+    }
+
+    public static class TestNested implements Properties {
+        @Option
+        public String str;
+
+        @Option(property = "int")
+        public int i;
+    }
+
+    @Test
+    void testNested () throws Exception {
+        var obj = new TestNested();
+        obj.initializeProperties("tt/config/testing.properties", PropertyPath.from("test_nested"));
+        assertEquals("Hello!", obj.str);
+        assertEquals(111, obj.i);
+    }
+
+    @From(file = "tt/config/testing.properties")
+    public class TestNesting implements Properties {
+        @Option
+        public TestNested testNested;
+    }
+
+    @Test
+    void testNesting () throws Exception {
+        var obj = new TestNesting();
+        obj.initializeProperties();
+        assertEquals("Hello!", obj.testNested.str);
+        assertEquals(111, obj.testNested.i);
     }
 }

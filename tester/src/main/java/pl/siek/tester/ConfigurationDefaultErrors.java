@@ -24,45 +24,45 @@ import java.util.Map;
 
 public class ConfigurationDefaultErrors extends ConfigurationDefault {
 
-	public static final Object ERROR_OPENING_LOG_FILE = "cannot open log file";
-	public static final Object ERROR_CLOSING_LOG_FILE = "cannot close log file";
-	public static final Object ERROR_WRITING_TO_LOG_FILE = "cannot write to log file";
-	public static String FILE_DOESNT_EXIST_OR_EMPTY = "file doesn't exist or empty";
-	public static String WRONG_FILE_FORMAT = "wrong file format";
-	public static String NO_QUESTION = "no_question";
-	public static String NO_VALID_ANSWERS = "no valid answers";
-	public static String OPERATION_UNSUCCESSFUL = "operation unsuccessfull";
-	public static String CONFIGURATION_FILE_ERROR = "Configuration File Error";
-	public static String ERROR_COPYING_FILE = "Error copying file";
-	public static String ERROR_WRITING_FILE = "Error writing file";
-	public static String CANNOT_MAKE_DIR = "cannot make dir";
-	public static String CONCERNING_INPUT = "concerning input";
-	public static String CONCERNING_MESSAGES = "concerning messages";
-	public static String CONCERNING_OPTIONS = "concerning options";
-	public static String CONCERNING_REGEX = "concerning regex";
-	public static String CONCERNING_RULES = "concerning rules";
-	public static String DELETING_NOT_SUCCESSFUL = "deleting not successful";
-	public static String DO_YOU_WANT_TO_REPLACE_IT = "do you want to replace it";
-	public static String ERROR_READING_FILE = "error reading file";
-	public static String ERROR = "error";
-	public static String FILE_ALREADY_EXISTS = "file already exists";
-	public static String INPUT_NOT_SET_SUCCESSFULLY = "input not set successfully";
-	public static String INVALID_ROOT_DIR = "invalid root dir";
-	public static String LOADING_DEFAULT_SETTINGS = "loading default settings";
-	public static String MALFORMED_URL = "malformed url";
-	public static String NO_CONNECTION_TO_URL = "no connection to url";
-	public static String NO_KEY = "no key";
-	public static String NO_STATE = "no state";
-	public static String NOT_POSSIBLE_OPTION_CHOICE = "not possible option choice";
-	public static String POSSIBLE_ENTRIES = "possible entries";
-	public static String UNKNOWN = "unknown";
-	public static String WARNING = "warning";
-	public static String CONCERNING = "concerning";
-	public static Object CONCERNING_FILE_PATHS = "concerning file paths";
-	public static Object CONCERNING_ERRORS = "concerning errors";
+	public static final String ERROR_OPENING_LOG_FILE = "cannot open log file";
+	public static final String ERROR_CLOSING_LOG_FILE = "cannot close log file";
+	public static final String ERROR_WRITING_TO_LOG_FILE = "cannot write to log file";
+	public static final String FILE_DOESNT_EXIST_OR_EMPTY = "file doesn't exist or empty";
+	public static final String WRONG_FILE_FORMAT = "wrong file format";
+	public static final String NO_QUESTION = "no_question";
+	public static final String NO_VALID_ANSWERS = "no valid answers";
+	public static final String OPERATION_UNSUCCESSFUL = "operation unsuccessfull";
+	public static final String CONFIGURATION_FILE_ERROR = "Configuration File Error";
+	public static final String ERROR_COPYING_FILE = "Error copying file";
+	public static final String ERROR_WRITING_FILE = "Error writing file";
+	public static final String CANNOT_MAKE_DIR = "cannot make dir";
+	public static final String CONCERNING_INPUT = "concerning input";
+	public static final String CONCERNING_MESSAGES = "concerning messages";
+	public static final String CONCERNING_OPTIONS = "concerning options";
+	public static final String CONCERNING_REGEX = "concerning regex";
+	public static final String CONCERNING_RULES = "concerning rules";
+	public static final String DELETING_NOT_SUCCESSFUL = "deleting not successful";
+	public static final String DO_YOU_WANT_TO_REPLACE_IT = "do you want to replace it";
+	public static final String ERROR_READING_FILE = "error reading file";
+	public static final String ERROR = "error";
+	public static final String FILE_ALREADY_EXISTS = "file already exists";
+	public static final String INPUT_NOT_SET_SUCCESSFULLY = "input not set successfully";
+	public static final String INVALID_ROOT_DIR = "invalid root dir";
+	public static final String LOADING_DEFAULT_SETTINGS = "loading default settings";
+	public static final String MALFORMED_URL = "malformed url";
+	public static final String NO_CONNECTION_TO_URL = "no connection to url";
+	public static final String NO_KEY = "no key";
+	public static final String NO_STATE = "no state";
+	public static final String NOT_POSSIBLE_OPTION_CHOICE = "not possible option choice";
+	public static final String POSSIBLE_ENTRIES = "possible entries";
+	public static final String UNKNOWN = "unknown";
+	public static final String WARNING = "warning";
+	public static final String CONCERNING = "concerning";
+	public static final String CONCERNING_FILE_PATHS = "concerning file paths";
+	public static final String CONCERNING_ERRORS = "concerning errors";
 
-	public static Map getDefaultConfig() {
-		Map map = new HashMap();
+	public static Map<String, ConfigurationItem> getDefaultConfig() {
+		var map = new HashMap<String, ConfigurationItem>();
 		map.put(CONFIGURATION_FILE_ERROR, new ConfigurationItem(
 				CONFIGURATION_FILE_ERROR, "Configuration File Error", null,
 				null));
