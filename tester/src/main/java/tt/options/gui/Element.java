@@ -1,6 +1,7 @@
 package tt.options.gui;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.swing.KeyStroke;
 
@@ -21,7 +22,14 @@ public class Element implements Properties {
     @Option
     public String mnemonic;
 
+    // Memoized unique label.
+    public String uniqueLabel;
+
+    // Generates a unique label which is then memoized.
     public String actionLabel() {
-        return this.label + "Action"; // TODO guarantee uniqueness
+        if (uniqueLabel==null) {
+            this.uniqueLabel = this.label + "Action@" + UUID.randomUUID();
+        }
+        return uniqueLabel;
     }
 }
