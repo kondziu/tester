@@ -8,6 +8,7 @@ import javax.swing.KeyStroke;
 import tt.config.annotations.Option;
 import tt.config.annotations.Properties;
 import tt.gui.KeyStrokeConvereter;
+import tt.gui.VirtualKeyConvereter;
 
 public class Element implements Properties {
     @Option
@@ -19,8 +20,8 @@ public class Element implements Properties {
     @Option(converter = KeyStrokeConvereter.class)
     public Optional<KeyStroke> key;
 
-    @Option
-    public String mnemonic;
+    @Option(converter = VirtualKeyConvereter.class)
+    public Optional<Integer> mnemonic;
 
     // Memoized unique label.
     public String uniqueLabel;

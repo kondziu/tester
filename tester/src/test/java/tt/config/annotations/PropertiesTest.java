@@ -5,12 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import tt.config.annotations.From;
-import tt.config.annotations.Properties;
-import tt.config.annotations.Option;
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.annotations.exceptions.CannotConvertIntoTypeException;
-import tt.config.annotations.exceptions.CannotCreateConverterInstanceException;
 import tt.config.annotations.exceptions.FileNotFoundException;
 import tt.config.annotations.exceptions.NotAConverterException;
 import tt.config.annotations.exceptions.NotAnnotatedException;
