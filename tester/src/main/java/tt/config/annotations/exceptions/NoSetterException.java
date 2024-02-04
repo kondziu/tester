@@ -18,7 +18,7 @@ public class NoSetterException extends AnnotationException {
 
         return String.format(MESSAGE_FORMAT, 
             field.field.getName(), 
-            field.parent.cls.getCanonicalName(), 
+            field.cls().getCanonicalName(), 
             field.type.getTypeName(), 
             setters);
     }

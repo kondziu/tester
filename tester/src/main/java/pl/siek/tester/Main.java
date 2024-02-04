@@ -289,11 +289,9 @@ public class Main extends JFrame {
 	 */
 	public void constructComponents() {
 
-		this.helpMeButton = GuiElement.button(
-			this.configurationAndSettings.messageConfiguration.getConfig(ConfigurationDefaultMessages.HELP_ME), 
-			"TODO", // this.configurationAndSettings.gui.helpDescription,
-			this.configurationAndSettings.keys.help, 
-			(e) -> this.helpMeActionPerformed(e)
+		this.helpMeButton = GuiElement.from(
+			this.configurationAndSettings.gui.help,
+			this::helpMeActionPerformed
 		);
 
 		ok = new JButton();

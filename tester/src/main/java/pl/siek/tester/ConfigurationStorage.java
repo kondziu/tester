@@ -30,6 +30,7 @@ import tt.config.exceptions.ConfigException;
 import tt.options.KeyBindings;
 import tt.options.MagicWords;
 import tt.options.Mnemonics;
+import tt.options.gui.Gui;
 
 public class ConfigurationStorage {
 	/**
@@ -47,8 +48,7 @@ public class ConfigurationStorage {
 	public Configuration errorConfiguration;
 
 	public final MagicWords magicWord;
-	public final KeyBindings keys;
-	public final Mnemonics mnemonics;
+	public final Gui gui;
 	// public final Gui gui;
 
 	/**
@@ -63,8 +63,7 @@ public class ConfigurationStorage {
 	public ConfigurationStorage() throws ConfigException, AnnotationException {
 		// this.loadConfigs("files/files.cfg");
 		this.magicWord = new MagicWords();
-		this.keys = new KeyBindings();
-		this.mnemonics = new Mnemonics();
+		this.gui = new Gui();
 		this.loadConfigs("config.txt");
 	}
 
@@ -82,8 +81,7 @@ public class ConfigurationStorage {
 	public ConfigurationStorage(String pathConfigurationFilePath)
 			throws IllegalAccessException, ConfigException, AnnotationException {
 		this.magicWord = new MagicWords();
-		this.keys = new KeyBindings();
-		this.mnemonics = new Mnemonics();
+		this.gui = new Gui();
 		this.loadConfigs(pathConfigurationFilePath);
 	}
 
@@ -338,8 +336,7 @@ public class ConfigurationStorage {
 	public ConfigurationStorage(Map<String, Configuration> map)
 			throws IllegalAccessException, ConfigException, AnnotationException {
 		this.magicWord = new MagicWords();
-		this.keys = new KeyBindings();
-		this.mnemonics = new Mnemonics();
+		this.gui = new Gui();
 
 		// Map hashMap = new HashMap();
 		pathConfiguration = map.get(ConfigurationDefault.PATH_SECTION);

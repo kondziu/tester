@@ -15,45 +15,125 @@ import tt.config.annotations.exceptions.FileNotFoundException;
 import tt.config.annotations.exceptions.NotAnnotatedException;
 import tt.config.exceptions.ConfigException;
 
-public class PropertyClass<T extends Properties> {
+public interface PropertyClass<T extends Properties> {  
+
+    public static class Top<T extends Properties> implements PropertyClass<T> {
+        final T instance;
+        final Class<T> cls;
+        final String file;
+        final Config config;
+        final List<PropertyField<T>> fields;
+
+        @SuppressWarnings("unchecked")
+        private Top(T instance, Config config, String file)  {
+            this.instance = instance;
+            this.cls = (Class<T>) instance.getClass();
+            this.file = file;
+            this.config = config;
     
-    public final T instance;
-    public final Class<T> cls;
-    public final PropertyPath path;
-    public final String file;
-    public final Config config;
-    private List<PropertyField<T>> fields;
-    private final Optional<PropertyField<?>> parent;
+            this.fields = this.optionFields().stream()
+                .map((field) -> new PropertyField<T>(this, field))
+                .collect(Collectors.toList());
+        }
 
-    @SuppressWarnings("unchecked")
-    private PropertyClass(Optional<PropertyField<?>> parent, T instance, Config config, PropertyPath path, String filePath)  {
-        this.instance = instance;
-        this.path = PropertyPath.top();
-        this.cls = (Class<T>) instance.getClass();
-        this.file = filePath;
-        this.config = config;
-        this.parent = parent;
+        @Override
+        public PropertyPath path() {
+            return PropertyPath.top();
+        }
 
-        this.fields = this.optionFields().stream()
-            .map((field) -> new PropertyField<T>(this, field))
-            .collect(Collectors.toList());
+        @Override
+        public T instance() {
+            return this.instance;
+        }
+
+        @Override
+        public Class<T> cls() {
+            return this.cls;
+        }
+
+        @Override
+        public String file() {
+            return this.file;
+        }
+
+        @Override
+        public Config config() {
+            return this.config;
+        }
+
+        @Override
+        public List<PropertyField<T>> fields() {
+            return this.fields;
+        }
+
+        @Override
+        public Optional<PropertyField<?>> parent() {
+            return Optional.empty();
+        }
     }
 
+    public static class Nested<T extends Properties, P extends Properties> implements PropertyClass<T> {
+        final PropertyField<P> parent;
+        final T instance;
+        final Class<T> cls;
+        final List<PropertyField<T>> fields;
+
+        @SuppressWarnings("unchecked")
+        private Nested(T instance, PropertyField<P> parent)  {
+            this.parent = parent;
+            this.instance = instance;
+            this.cls = (Class<T>) instance.getClass();
+    
+            this.fields = this.optionFields().stream()
+                .map((field) -> new PropertyField<T>(this, field))
+                .collect(Collectors.toList());
+        }
+
+        @Override
+        public PropertyPath path() {
+            return this.parent.path();
+        }
+
+        @Override
+        public T instance() {
+            return this.instance;
+        }
+
+        @Override
+        public Class<T> cls() {
+            return this.cls;
+        }
+
+        @Override
+        public String file() {
+            return this.parent.file();
+        }
+
+        @Override
+        public Config config() {
+            return this.parent.config();
+        }
+
+        @Override
+        public List<PropertyField<T>> fields() {
+            return this.fields;
+        }
+
+        @Override
+        public Optional<PropertyField<?>> parent() {
+           return Optional.of(this.parent);
+        }
+    }
+    
     public static <T extends Properties> PropertyClass<T> from(T instance) throws NotAnnotatedException, FileNotFoundException {
-        System.err.println("...");
         String filePath = getFilePath(instance);
-        System.err.println(",,,");
         Config config = new PropertyConfig(filePath);
-        return new PropertyClass<T>(Optional.empty(), instance, config, PropertyPath.top(), filePath);
+        return new PropertyClass.Top<T>(instance, config, filePath);
     }
 
-    public static <T extends Properties, F extends Properties> PropertyClass<T> from(T instance, PropertyField<F> field) throws NotAnnotatedException, FileNotFoundException {
-        return new PropertyClass<T>(Optional.of(field), instance, field.parent.config, field.path(), field.parent.file);
+    public static <T extends Properties, P extends Properties> PropertyClass<T> from(T instance, PropertyField<P> parent) throws NotAnnotatedException, FileNotFoundException {
+        return new PropertyClass.Nested<T, P>(instance, parent);
     }
-
-    // public static <T extends Properties> PropertyClass<T> from(T instance, Config config, PropertyPath path, String filePath) {
-    //     return new PropertyClass<T>(instance, config, path, filePath);
-    // }
 
     public static <T extends Properties> String getFilePath(T instance) throws NotAnnotatedException, FileNotFoundException {
         Class<?> cls = instance.getClass();
@@ -74,15 +154,22 @@ public class PropertyClass<T extends Properties> {
         return path;
     }
 
-    public List<Field> optionFields() {
-        return Stream.of(this.cls.getFields())
+    T instance();
+    Class<T> cls();
+    String file();
+    Config config();
+    List<PropertyField<T>> fields();
+    Optional<PropertyField<?>> parent();
+    PropertyPath path();
+
+    default List<Field> optionFields() {
+        return Stream.of(this.cls().getFields())
                 .filter(field -> field.isAnnotationPresent(Option.class))
                 .collect(Collectors.toList());
     }
 
-
-    public void populateFields() throws AnnotationException, ConfigException {
-        for (var field : this.fields) {            
+    default void populateFields() throws AnnotationException, ConfigException {
+        for (var field : this.fields()) {            
             field.set();
         }
     }

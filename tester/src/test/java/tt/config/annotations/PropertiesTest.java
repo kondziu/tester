@@ -23,8 +23,10 @@ import tt.config.helpers.StringToUppercase;
 
 public class PropertiesTest {
 
-    public class TestClassNotAnnotated extends AbstractProperties {
-        public TestClassNotAnnotated() throws ConfigException, AnnotationException {}
+    public class TestClassNotAnnotated implements Properties {
+        public TestClassNotAnnotated() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
     }
 
     @Test
@@ -35,8 +37,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/.not_here.properties")
-    public class TestClassWrongPath extends AbstractProperties {
-        public TestClassWrongPath() throws ConfigException, AnnotationException {}
+    public class TestClassWrongPath implements Properties {
+        public TestClassWrongPath() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
     }
 
     @Test
@@ -47,8 +51,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassEmpty extends AbstractProperties {
-        public TestClassEmpty() throws ConfigException, AnnotationException {}
+    public class TestClassEmpty implements Properties {
+        public TestClassEmpty() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
     }
 
     @Test
@@ -57,8 +63,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassStringField extends AbstractProperties {
-        public TestClassStringField() throws ConfigException, AnnotationException {}
+    public class TestClassStringField implements Properties {
+        public TestClassStringField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option
         public String fieldStr;
@@ -71,8 +79,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassStringRenamedField extends AbstractProperties {
-        public TestClassStringRenamedField() throws ConfigException, AnnotationException {}
+    public class TestClassStringRenamedField implements Properties {
+        public TestClassStringRenamedField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(property = "field_str")
         public String str;
@@ -85,8 +95,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassIntegerField extends AbstractProperties {
-        public TestClassIntegerField() throws ConfigException, AnnotationException {}
+    public class TestClassIntegerField implements Properties {
+        public TestClassIntegerField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option
         public Integer fieldInt;
@@ -99,8 +111,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassIntegerRenamedField extends AbstractProperties {
-        public TestClassIntegerRenamedField() throws ConfigException, AnnotationException {}
+    public class TestClassIntegerRenamedField implements Properties {
+        public TestClassIntegerRenamedField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(property = "field_int")
         public Integer i;
@@ -113,8 +127,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassIntegerPrimitiveField extends AbstractProperties {
-        public TestClassIntegerPrimitiveField() throws ConfigException, AnnotationException {}
+    public class TestClassIntegerPrimitiveField implements Properties {
+        public TestClassIntegerPrimitiveField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option
         public int fieldInt;
@@ -127,8 +143,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassIntegerRenamedPrimitiveField extends AbstractProperties {
-        public TestClassIntegerRenamedPrimitiveField() throws ConfigException, AnnotationException {}
+    public class TestClassIntegerRenamedPrimitiveField implements Properties {
+        public TestClassIntegerRenamedPrimitiveField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(property = "field_int")
         public int i;
@@ -141,8 +159,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassBooleanField extends AbstractProperties {
-        public TestClassBooleanField() throws ConfigException, AnnotationException {}
+    public class TestClassBooleanField implements Properties {
+        public TestClassBooleanField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option
         public Boolean fieldBool;
@@ -155,8 +175,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassBooleanRenamedField extends AbstractProperties {
-        public TestClassBooleanRenamedField() throws ConfigException, AnnotationException {}
+    public class TestClassBooleanRenamedField implements Properties {
+        public TestClassBooleanRenamedField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(property = "field_bool")
         public Boolean b;
@@ -170,8 +192,10 @@ public class PropertiesTest {
 
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassBooleanPrimitiveField extends AbstractProperties {
-        public TestClassBooleanPrimitiveField() throws ConfigException, AnnotationException {}
+    public class TestClassBooleanPrimitiveField implements Properties {
+        public TestClassBooleanPrimitiveField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
         
         @Option
         public boolean fieldBool;
@@ -184,8 +208,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassBooleanRenamedPrimitiveField extends AbstractProperties {
-        public TestClassBooleanRenamedPrimitiveField() throws ConfigException, AnnotationException {}
+    public class TestClassBooleanRenamedPrimitiveField implements Properties {
+        public TestClassBooleanRenamedPrimitiveField() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(property = "field_bool")
         public boolean b;
@@ -198,8 +224,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassMix extends AbstractProperties {
-        public TestClassMix() throws ConfigException, AnnotationException {}
+    public class TestClassMix implements Properties {
+        public TestClassMix() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option
         public Boolean fieldBool;
@@ -232,8 +260,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassWrongTypeInt extends AbstractProperties {
-        public TestClassWrongTypeInt() throws ConfigException, AnnotationException {}
+    public class TestClassWrongTypeInt implements Properties {
+        public TestClassWrongTypeInt() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option
         public int fieldStr;
@@ -247,8 +277,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassWrongTypeBoolean extends AbstractProperties {
-        public TestClassWrongTypeBoolean() throws ConfigException, AnnotationException {}
+    public class TestClassWrongTypeBoolean implements Properties {
+        public TestClassWrongTypeBoolean() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option
         public boolean fieldStr;
@@ -262,8 +294,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassMissingProperty extends AbstractProperties {
-        public TestClassMissingProperty() throws ConfigException, AnnotationException {}
+    public class TestClassMissingProperty implements Properties {
+        public TestClassMissingProperty() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(property = "fieldStr")
         public String nope;
@@ -277,8 +311,10 @@ public class PropertiesTest {
     }  
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassCustomStringToString extends AbstractProperties {
-        public TestClassCustomStringToString() throws ConfigException, AnnotationException {}
+    public class TestClassCustomStringToString implements Properties {
+        public TestClassCustomStringToString() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(converter = StringToUppercase.class)
         public String fieldStr;
@@ -291,8 +327,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassCustomStringToDouble extends AbstractProperties {
-        public TestClassCustomStringToDouble() throws ConfigException, AnnotationException {}
+    public class TestClassCustomStringToDouble implements Properties {
+        public TestClassCustomStringToDouble() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(converter = DoubleIdentity.class)
         public Double fieldFp;
@@ -305,8 +343,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassCustomStringToInteger extends AbstractProperties {
-        public TestClassCustomStringToInteger() throws ConfigException, AnnotationException {}
+    public class TestClassCustomStringToInteger implements Properties {
+        public TestClassCustomStringToInteger() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(converter = IntegerIdentity.class)
         public Integer fieldInt;
@@ -319,8 +359,10 @@ public class PropertiesTest {
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassCustomStringToDoubleButInteger extends AbstractProperties {
-        public TestClassCustomStringToDoubleButInteger() throws ConfigException, AnnotationException {}
+    public class TestClassCustomStringToDoubleButInteger implements Properties {
+        public TestClassCustomStringToDoubleButInteger() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(converter = IntegerIdentity.class)
         public Double fieldInt;
@@ -329,13 +371,15 @@ public class PropertiesTest {
     @Test
     void testClassCustomStringToDoubleButInteger() throws Exception {
         assertThrows(CannotConvertIntoTypeException.class, () -> {
-            var obj = new TestClassCustomStringToDoubleButInteger ();
+            new TestClassCustomStringToDoubleButInteger ();
         });
     }
 
     @From(file = "tt/config/testing.properties")
-    public class TestClassCustomWrongConverter extends AbstractProperties {
-        public TestClassCustomWrongConverter() throws ConfigException, AnnotationException {}
+    public class TestClassCustomWrongConverter implements Properties {
+        public TestClassCustomWrongConverter() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
         @Option(converter = Double.class)
         public Double fieldFp;
@@ -348,29 +392,25 @@ public class PropertiesTest {
         });
     }
 
-    public static class TestNested extends AbstractProperties {
-        public TestNested() throws ConfigException, AnnotationException {}
+    @From(file = "tt/config/testing.properties")
+    public class TestNesting implements Properties {
+        public TestNesting() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
 
+        @Option
+        public TestNested testNested;
+    }
+
+    public static class TestNested implements Properties {
         @Option
         public String str;
 
         @Option(property = "int")
         public int i;
-    }
 
-    // @Test
-    // void testNested () throws Exception {
-    //     var obj = new TestNested();
-    //     assertEquals("Hello!", obj.str);
-    //     assertEquals(111, obj.i);
-    // }
-
-    @From(file = "tt/config/testing.properties")
-    public class TestNesting extends AbstractProperties {
-        public TestNesting() throws ConfigException, AnnotationException {}
-
-        @Option
-        public TestNested testNested;
+        @Option(converter = StringToUppercase.class)
+        public String conv;
     }
 
     @Test
@@ -378,5 +418,6 @@ public class PropertiesTest {
         var obj = new TestNesting();
         assertEquals("Hello!", obj.testNested.str);
         assertEquals(111, obj.testNested.i);
+        assertEquals("HELLO", obj.testNested.conv);
     }
 }

@@ -69,7 +69,7 @@ public class PropertyField<T extends Properties> {
             String name = this.field.getName();
             property = CaseAwareString.fromCamelCase(name).intoSnakeCase(false);
         }
-        return this.parent.path.concat(property);
+        return this.parent.path().concat(property);
     }
 
     public <C> Optional<Converter<String, C>> converter() throws AnnotationException {
@@ -129,21 +129,28 @@ public class PropertyField<T extends Properties> {
             () -> new NoSetterException(this)
         );
 
-        Object value = getter.apply(this.parent.config, this.path().toString());
+    try {
+        Object value = getter.apply(this.config(), this.path().toString());
+        
         Utils.attempt(
-            () -> setter.apply(this.field, this.parent.instance, value), 
+            () -> setter.apply(this.field, this.instance(), value), 
             (e) -> new CannotSetFieldValueException(this, e)
         );
+
+    } catch(Exception ex) {
+        System.err.println("FAIL " + this.path() + " .. " + this.parent.path());
+        throw ex;
+        }
     }
 
     private <C> void setFromConverter(Converter<String, C> converter) throws ConfigException, AnnotationException {
 
-        System.err.println("conv");
-        String value = this.parent.config.getOrFail(this.path().getLastOrEmpty());
+        System.err.println("conv " + this.path());
+        String value = this.config().getOrFail(this.path().toString());
         Object object = converter.apply(value);
 
         Utils.attempt(
-            () -> field.set(this.parent.instance, object), 
+            () -> field.set(this.instance(), object), 
             (e) -> new CannotSetFieldValueException(this, e)
         );
     }
@@ -200,7 +207,7 @@ public class PropertyField<T extends Properties> {
         );
 
         Utils.attempt(
-            () -> field.set(this.parent.instance, nestedProperties),
+            () -> field.set(this.instance(), nestedProperties),
             (e) -> new AnnotationException("WIP4", e)
         );
 
@@ -231,9 +238,19 @@ public class PropertyField<T extends Properties> {
         this.setDefault();
     }
 
-    @Override
-    public String toString() {
-        String format = "PropertyField { field: %s, option: %s, type: %s, path: %s, parent: %s }";
-        return String.format(format, this.field, this.option, this.type, this.path(), this.parent.cls);
+    public T instance() {
+        return this.parent.instance();
+    }
+
+    public String file() {
+        return this.parent.file();
+    }
+
+    public Config config() {
+        return this.parent.config();
+    }
+
+    public Class<T> cls() {
+        return this.parent.cls();
     }
 }

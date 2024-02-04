@@ -17,7 +17,7 @@ public class UnsupportedFieldTypeException extends AnnotationException {
 
         return String.format(MESSAGE_FORMAT, 
             field.field.getName(), 
-            field.parent.cls.getCanonicalName(), 
+            field.cls().getCanonicalName(), 
             field.type.getTypeName(), 
             field.option.getClass().getCanonicalName(),
             types);

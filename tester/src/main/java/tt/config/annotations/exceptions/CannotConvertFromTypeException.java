@@ -12,7 +12,7 @@ public class CannotConvertFromTypeException extends AnnotationException {
         private static <T extends Properties> String message(PropertyField<T> field, Type fromType) {
             return String.format(MESSAGE_FORMAT, 
                 field.field.getName(), 
-                field.parent.cls.getCanonicalName(), 
+                field.cls().getCanonicalName(), 
                 field.type.getTypeName(), 
                 field.option.getClass().getCanonicalName(),
                 fromType.getTypeName());

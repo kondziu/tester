@@ -12,7 +12,7 @@ public class CannotSetFieldValueException extends AnnotationException {
             field.field.getName(), 
             field.type.getTypeName(), 
             field.option.getClass().getCanonicalName(),
-            field.parent.cls.getCanonicalName(), 
+            field.cls().getCanonicalName(), 
             cause.getMessage());
     }
 

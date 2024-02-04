@@ -5,16 +5,13 @@ import tt.config.annotations.Properties;
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.exceptions.ConfigException;
 
-import java.util.Set;
-
-import tt.config.annotations.AbstractProperties;
 import tt.config.annotations.From;
 
 @From(file="tt/options/mnemonics.properties")
-public class Mnemonics extends AbstractProperties {
+public class Mnemonics implements Properties {
 
     public Mnemonics() throws ConfigException, AnnotationException {
-        super();
+        this.initialize();
     }
 
     // Buttons
@@ -41,7 +38,7 @@ public class Mnemonics extends AbstractProperties {
     public String help;
 
 
-    public class FileMenu extends AbstractProperties {
+    public class FileMenu implements Properties {
 
         public FileMenu() throws ConfigException, AnnotationException {}
 
@@ -60,7 +57,7 @@ public class Mnemonics extends AbstractProperties {
     
     public FileMenu fileMenu;
 
-    public class TestMenu extends AbstractProperties {
+    public class TestMenu implements Properties {
 
         public TestMenu() throws ConfigException, AnnotationException {}
 
@@ -97,9 +94,7 @@ public class Mnemonics extends AbstractProperties {
 
     // Preferences drop-down menu (top)
     @From(file="tt/options/mnemonics.properties")
-    public class PreferencesMenu extends AbstractProperties {
-
-        public PreferencesMenu() throws ConfigException, AnnotationException {}
+    public class PreferencesMenu implements Properties {
         
         @Option
         public String language;
@@ -121,7 +116,7 @@ public class Mnemonics extends AbstractProperties {
 
     // Help drop-down menu (top)
     @From(file="tt/options/mnemonics.properties")
-    public class HelpMenu extends AbstractProperties {
+    public class HelpMenu implements Properties {
 
         public HelpMenu() throws ConfigException, AnnotationException {}
 
