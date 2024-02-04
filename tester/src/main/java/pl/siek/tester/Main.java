@@ -294,9 +294,17 @@ public class Main extends JFrame {
 			this::helpMeActionPerformed
 		);
 
-		ok = new JButton();
+		ok = GuiElement.from(
+			this.configurationAndSettings.gui.ok,
+			this::okActionPerformed
+		);
+
+		startTest = GuiElement.from(
+			this.configurationAndSettings.gui.start,
+			this::startTestActionPerformed
+		);
+
 		answer = new JTextField();
-		startTest = new JButton();
 		gradePanel = new JPanel();
 		gradeLabel = new JLabel();
 		grade = new JLabel();
@@ -807,11 +815,11 @@ public class Main extends JFrame {
 				showAboutActionPerformed(evt);
 			}
 		});
-		startTest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				startTestActionPerformed(evt);
-			}
-		});
+		// startTest.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		startTestActionPerformed(evt);
+		// 	}
+		// });
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				startTestActionPerformed(evt);
@@ -827,16 +835,16 @@ public class Main extends JFrame {
 				}
 			}
 		});
-		ok.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				okActionPerformed(evt);
-			}
-		});
-		help.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				helpMeActionPerformed(evt);
-			}
-		});
+		// ok.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		okActionPerformed(evt);
+		// 	}
+		// });
+		// help.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		helpMeActionPerformed(evt);
+		// 	}
+		// });
 
 		open.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -1194,10 +1202,10 @@ public class Main extends JFrame {
 			question.setText("");
 		}
 
-		ok.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.OK));
-		startTest.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.START_TEST));
+		// ok.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.OK));
+		// startTest.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.START_TEST));
 		// helpMeButton.setText(configurationAndSettings.messageConfiguration
 		// 		.getConfig(ConfigurationDefaultMessages.HELP_ME));
 		grade.setText(configurationAndSettings.messageConfiguration

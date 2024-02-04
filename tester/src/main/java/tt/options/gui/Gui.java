@@ -15,5 +15,11 @@ public class Gui implements Properties {
     }
 
     @Option
+    public Element start;
+    
+    @Option
     public Element help;
+
+    @Option
+    public Element ok;
 }

@@ -31,14 +31,12 @@ public class GuiElement {
         var button = new JButton(action);
 
         button.getActionMap().put(element.actionLabel(), action);
-        
         element.mnemonic.ifPresent(button::setMnemonic);
-
         element.key.ifPresent(key -> {
             var inputs = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
             inputs.put(key, element.actionLabel());
         });
-
+        
         return button;
     }
 }
