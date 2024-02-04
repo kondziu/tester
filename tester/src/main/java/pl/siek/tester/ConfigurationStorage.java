@@ -60,7 +60,7 @@ public class ConfigurationStorage {
 	 * @throws ConfigException
 	 * @throws IllegalAccessException
 	 */
-	public ConfigurationStorage() throws IllegalAccessException, ConfigException, AnnotationException {
+	public ConfigurationStorage() throws ConfigException, AnnotationException {
 		// this.loadConfigs("files/files.cfg");
 		this.magicWord = new MagicWords();
 		this.keys = new KeyBindings();

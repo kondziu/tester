@@ -482,7 +482,7 @@ public class DynamicDirectoryTreeFrame extends JPanel implements ActionListener 
 				try {
 					config = new ConfigurationStorage();
 					createAndShowGUI(config);
-				} catch (IllegalAccessException | ConfigException | AnnotationException e) {
+				} catch (ConfigException | AnnotationException e) {
 					e.printStackTrace();
 				}
 			}

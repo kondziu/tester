@@ -7,17 +7,14 @@ import tt.config.exceptions.ConfigException;
 
 import java.util.Set;
 
+import tt.config.annotations.AbstractProperties;
 import tt.config.annotations.From;
 
 @From(file="tt/options/mnemonics.properties")
-public class Mnemonics implements Properties {
+public class Mnemonics extends AbstractProperties {
 
-    public Mnemonics() throws IllegalAccessException, ConfigException, AnnotationException {
-        this.initializeProperties();
-        this.fileMenu = new FileMenu();
-        this.testMenu = new TestMenu();
-        this.preferencesMenu = new PreferencesMenu();
-        this.helpMenu = new HelpMenu();
+    public Mnemonics() throws ConfigException, AnnotationException {
+        super();
     }
 
     // Buttons
@@ -43,62 +40,56 @@ public class Mnemonics implements Properties {
     @Option
     public String help;
 
-    // File drop-down menu (top)
-    @From(file="tt/options/mnemonics.properties")
-    public class FileMenu implements Properties {
 
-        public FileMenu() throws IllegalAccessException, ConfigException, AnnotationException {
-            this.initializeProperties();
-        }
+    public class FileMenu extends AbstractProperties {
 
-        @Option(property = "file.open")
+        public FileMenu() throws ConfigException, AnnotationException {}
+
+        @Option
         public String open;
 
-        @Option(property = "file.internet")
+        @Option
         public String internet;
 
-        @Option(property = "file.manage")
+        @Option
         public String manage;
 
-        @Option(property = "file.quit")
+        @Option
         public String quit;
     }
     
     public FileMenu fileMenu;
 
-    @From(file="tt/options/mnemonics.properties")
-    public class TestMenu implements Properties {
+    public class TestMenu extends AbstractProperties {
 
-        public TestMenu() throws IllegalAccessException, ConfigException, AnnotationException {
-            this.initializeProperties();
-        }
+        public TestMenu() throws ConfigException, AnnotationException {}
 
         // Test drop-down menu (top)
-        @Option(property = "test.help")
+        @Option
         public String help;
 
-        @Option(property = "test.start")
+        @Option
         public String start;
 
-        @Option(property = "test.stop")
+        @Option
         public String stop;
 
-        @Option(property = "test.training")
+        @Option
         public String training;
 
-        @Option(property = "test.shuffle")
+        @Option
         public String shuffle;
 
-        @Option(property = "test.reverse")
+        @Option
         public String reverse;
 
-        @Option(property = "test.use_rules")
+        @Option
         public String useRules;
 
-        @Option(property = "test.ignore_case")
+        @Option
         public String ignoreCase;
 
-        @Option(property = "test.repetition")
+        @Option
         public String repetition;
     }
 
@@ -106,25 +97,23 @@ public class Mnemonics implements Properties {
 
     // Preferences drop-down menu (top)
     @From(file="tt/options/mnemonics.properties")
-    public class PreferencesMenu implements Properties {
+    public class PreferencesMenu extends AbstractProperties {
 
-        public PreferencesMenu() throws IllegalAccessException, ConfigException, AnnotationException {
-            this.initializeProperties();
-        }
+        public PreferencesMenu() throws ConfigException, AnnotationException {}
         
-        @Option(property = "preferences.language")
+        @Option
         public String language;
 
-        @Option(property = "preferences.logging")
+        @Option
         public String logging;
 
-        @Option(property = "preferences.statistics")
+        @Option
         public String statistics;
 
-        @Option(property = "preferences.configuration")
+        @Option
         public String configuration;
 
-        @Option(property = "preferences.reload")
+        @Option
         public String reload;
     }
 
@@ -132,16 +121,14 @@ public class Mnemonics implements Properties {
 
     // Help drop-down menu (top)
     @From(file="tt/options/mnemonics.properties")
-    public class HelpMenu implements Properties {
+    public class HelpMenu extends AbstractProperties {
 
-        public HelpMenu() throws IllegalAccessException, ConfigException, AnnotationException {
-            this.initializeProperties();
-        }
+        public HelpMenu() throws ConfigException, AnnotationException {}
 
-        @Option(property = "help.dictionary")
+        @Option
         public String dictionary;
         
-        @Option(property = "help.about")
+        @Option
         public String about;
     }
 

@@ -1,6 +1,7 @@
 package tt.config.annotations;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,6 +33,18 @@ class PropertyPath {
             return true;
         }
         return false;
+    }
+
+    public Optional<String> getLast() {
+        if (this.isTop()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(this.path[0]);
+        }
+    }
+
+    public String getLastOrEmpty() {
+        return this.getLast().orElse("");
     }
 
     @Override
