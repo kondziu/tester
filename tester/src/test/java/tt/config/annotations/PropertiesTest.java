@@ -416,4 +416,60 @@ public class PropertiesTest {
         assertEquals(111, obj.testNested.i);
         assertEquals("HELLO", obj.testNested.conv);
     }
+
+    @From(file = "tt/config/testing.properties")
+    public class TestMultipleNesting implements Properties {
+        public TestMultipleNesting() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
+
+        @Option
+        public TestMultipleNestedNesting testNested;
+    }
+
+    public static class TestMultipleNestedNesting implements Properties {
+        @Option
+        public TestMultipleNested nested;
+    }
+
+    public static class TestMultipleNested implements Properties {
+        @Option
+        public String str;
+
+        @Option(property = "int")
+        public int i;
+
+        @Option(converter = StringToUppercase.class)
+        public String conv;
+    }
+
+    @Test
+    void testMultipleNesting () throws Exception {
+        var obj = new TestMultipleNesting();
+        assertEquals("Hello!", obj.testNested.nested.str);
+        assertEquals(111, obj.testNested.nested.i);
+        assertEquals("HELLO", obj.testNested.nested.conv);
+    }
+
+    public static class TestExtended implements Properties {
+        @Option
+        public String fieldStr;
+    }
+
+    @From(file = "tt/config/testing.properties")    
+    public static class TestExtending extends TestExtended {
+        public TestExtending() throws ConfigException, AnnotationException {
+            this.initialize();
+        }
+
+        @Option
+        public int fieldInt;
+    }
+
+    @Test
+    void testExtending () throws Exception {
+        var obj = new TestExtending();
+        assertEquals("Hello, world!", obj.fieldStr);
+        assertEquals(42, obj.fieldInt);
+    }
 }

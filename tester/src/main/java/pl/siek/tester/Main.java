@@ -43,14 +43,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -69,7 +66,6 @@ import javax.swing.border.BevelBorder;
 
 import tt.config.annotations.exceptions.AnnotationException;
 import tt.config.exceptions.ConfigException;
-import tt.options.KeyBindings;
 import tt.gui.GuiElement;
 
 public class Main extends JFrame {
@@ -304,6 +300,149 @@ public class Main extends JFrame {
 			this::startTestActionPerformed
 		);
 
+		// File menu
+		file = GuiElement.from(
+			this.configurationAndSettings.gui.menu.file
+		);
+
+		open = GuiElement.from(
+			this.configurationAndSettings.gui.menu.file.open,
+			this::openActionPerformed
+		);
+
+		manage = GuiElement.from(
+			this.configurationAndSettings.gui.menu.file.manage,
+			this::manageActionPerformed
+		);
+
+		internet = GuiElement.from(
+			this.configurationAndSettings.gui.menu.file.internet,
+			this::setForDownloadActionPerformed
+		);
+
+		quit = GuiElement.from(
+			this.configurationAndSettings.gui.menu.file.quit,
+			(event)-> this.quitActionPerformed()
+		);
+
+		// Test menu
+		test = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test
+		);
+
+		start = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.start, 
+			this::startTestActionPerformed
+		);
+
+		stop = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.stop, 
+			this::stopActionPerformed
+		);
+
+		helpMe = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.help, 
+			this::helpMeActionPerformed
+		);
+
+		training = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.training,
+			this::switchTrainingActionPerformed
+		);
+
+		shuffle = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.shuffle,
+			this::switchActionPerformed,
+			ConfigurationDefaultOptions.SHUFFLE
+		);
+
+		reverse = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.reverse,
+			this::switchActionPerformed,
+			ConfigurationDefaultOptions.REVERSE
+		);
+
+		useRules = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.useRules,
+			this::switchActionPerformed,
+			ConfigurationDefaultOptions.USE_RULES
+		);
+
+		ignoreCase = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.ignoreCase,
+			this::switchActionPerformed,
+			ConfigurationDefaultOptions.IGNORE_CASE
+		);
+
+		repetitionType = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.repetition,
+			this::switchActionPerformed,
+			ConfigurationDefaultOptions.REPETITION_TYPE
+		);
+
+		remove =  GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.removeQuestion,
+			this::removeItemActionPerformed
+		);
+
+		edit = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.editQuestion,
+			this::editItemActionPerformed
+		);
+
+		erase = GuiElement.from(
+			this.configurationAndSettings.gui.menu.test.eraseRepetition,
+			this::eraseActionPerformed
+		);
+			
+		// Preferences menu
+		preferences = GuiElement.from(
+			this.configurationAndSettings.gui.menu.preferences
+		);
+
+		language = GuiElement.from(
+			this.configurationAndSettings.gui.menu.preferences.language,
+			this::languageActionPerformed
+		);
+
+		statistics = GuiElement.from(
+			this.configurationAndSettings.gui.menu.preferences.logging,
+			this::switchStatisticsActionPerformed
+		);
+
+		configuration = GuiElement.from(
+			this.configurationAndSettings.gui.menu.preferences.configuration,
+			(event) -> {
+				try {
+				this.configurationTestActionPerformed(event);
+				} catch (Exception e) {
+					// TODO figure out how to properly fail
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			}
+		);
+
+		reload = GuiElement.from(
+			this.configurationAndSettings.gui.menu.preferences.reload,
+			this::reloadActionPerformed
+		);
+		
+		// Help menu
+		help = GuiElement.from(
+			this.configurationAndSettings.gui.menu.help
+		);
+
+		dictionary = GuiElement.from(
+			this.configurationAndSettings.gui.menu.help.dictionary,
+			this::dictionaryActionPerformed
+		);
+
+		about = GuiElement.from(
+			this.configurationAndSettings.gui.menu.help.about,
+			this::showAboutActionPerformed
+		);
+
 		answer = new JTextField();
 		gradePanel = new JPanel();
 		gradeLabel = new JLabel();
@@ -312,33 +451,33 @@ public class Main extends JFrame {
 		question = new JTextPane();
 		points = new JLabel();
 		menu = new JMenuBar();
-		file = new JMenu();
-		open = new JMenuItem();
-		manage = new JMenuItem();
-		internet = new JMenuItem();
-		quit = new JMenuItem();
-		reload = new JMenuItem();
-		test = new JMenu();
-		helpMe = new JMenuItem();
+		// file = new JMenu();
+		// open = new JMenuItem();
+		// manage = new JMenuItem();
+		// internet = new JMenuItem();
+		// quit = new JMenuItem();
+		// reload = new JMenuItem();
+		// test = new JMenu();
+		// helpMe = new JMenuItem();
 		separator1 = new JSeparator();
 		separator3 = new JSeparator();
-		start = new JMenuItem();
-		training = new JCheckBoxMenuItem();
-		shuffle = new JCheckBoxMenuItem();
-		reverse = new JCheckBoxMenuItem();
-		erase = new JMenuItem();
+		// start = new JMenuItem();
+		// training = new JCheckBoxMenuItem();
+		// shuffle = new JCheckBoxMenuItem();
+		// reverse = new JCheckBoxMenuItem();
+		// erase = new JMenuItem();
 		separator2 = new JSeparator();
-		edit = new JMenuItem();
-		remove = new JMenuItem();
-		stop = new JMenuItem();
-		preferences = new JMenu();
-		language = new JMenuItem();
-		statistics = new JCheckBoxMenuItem();
-		configuration = new JMenuItem();
-		dictionary = new JMenuItem();
-		help = new JMenu();
+		// edit = new JMenuItem();
+		// remove = new JMenuItem();
+		// stop = new JMenuItem();
+		// preferences = new JMenu();
+		// language = new JMenuItem();
+		// statistics = new JCheckBoxMenuItem();
+		// configuration = new JMenuItem();
+		// dictionary = new JMenuItem();
+		// help = new JMenu();
 		// handbook = new JMenuItem();
-		about = new JMenuItem();
+		// about = new JMenuItem();
 		topPanel = new JPanel();
 		bottomPanel = new JPanel();
 		mainPanel = new JPanel();
@@ -349,9 +488,9 @@ public class Main extends JFrame {
 		statusLabel = new JLabel();
 		clockLabel = new JLabel();
 		statusPanel = new JPanel();
-		useRules = new JCheckBoxMenuItem();
-		ignoreCase = new JCheckBoxMenuItem();
-		repetitionType = new JCheckBoxMenuItem();
+		// useRules = new JCheckBoxMenuItem();
+		// ignoreCase = new JCheckBoxMenuItem();
+		// repetitionType = new JCheckBoxMenuItem();
 		picture = null;
 		clock = new Clock(clockLabel);
 
@@ -810,31 +949,31 @@ public class Main extends JFrame {
 	 * @version 2.0
 	 */
 	private void setComponentActions() {
-		about.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				showAboutActionPerformed(evt);
-			}
-		});
+		// about.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		showAboutActionPerformed(evt);
+		// 	}
+		// });
 		// startTest.addActionListener(new ActionListener() {
 		// 	public void actionPerformed(ActionEvent evt) {
 		// 		startTestActionPerformed(evt);
 		// 	}
 		// });
-		start.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				startTestActionPerformed(evt);
-			}
-		});
-		configuration.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				try {
-				configurationTestActionPerformed(evt);
-				} catch(Exception e) {
-					// TODO figure out how to properly fail
-					throw new Error(e);
-				}
-			}
-		});
+		// start.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		startTestActionPerformed(evt);
+		// 	}
+		// });
+		// configuration.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		try {
+		// 		configurationTestActionPerformed(evt);
+		// 		} catch(Exception e) {
+		// 			// TODO figure out how to properly fail
+		// 			throw new Error(e);
+		// 		}
+		// 	}
+		// });
 		// ok.addActionListener(new ActionListener() {
 		// 	public void actionPerformed(ActionEvent evt) {
 		// 		okActionPerformed(evt);
@@ -846,109 +985,109 @@ public class Main extends JFrame {
 		// 	}
 		// });
 
-		open.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				openActionPerformed(evt);
-			}
-		});
-		manage.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				manageActionPerformed(evt);
-			}
-		});
-		internet.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				setForDownloadActionPerformed(evt);
-			}
-		});
-		quit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				quitActionPerformed();
-			}
-		});
-		language.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				languageActionPerformed(evt);
-			}
-		});
-		training.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				switchTrainingActionPerformed(evt);
-			}
-		});
-		statistics.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				switchStatisticsActionPerformed(evt);
-			}
-		});
-		repetitionType.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				switchRepetitionActionPerformed(evt);
-			}
-		});
-		reload.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				reloadActionPerformed(evt);
-			}
-		});
-		stop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				stopActionPerformed(evt);
-			}
-		});
+		// open.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		openActionPerformed(evt);
+		// 	}
+		// });
+		// manage.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		manageActionPerformed(evt);
+		// 	}
+		// });
+		// internet.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		setForDownloadActionPerformed(evt);
+		// 	}
+		// });
+		// quit.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		quitActionPerformed();
+		// 	}
+		// });
+		// language.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		languageActionPerformed(evt);
+		// 	}
+		// });
+		// training.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		switchTrainingActionPerformed(evt);
+		// 	}
+		// });
+		// statistics.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		switchStatisticsActionPerformed(evt);
+		// 	}
+		// });
+		// repetitionType.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		switchRepetitionActionPerformed(evt);
+		// 	}
+		// });
+		// reload.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		reloadActionPerformed(evt);
+		// 	}
+		// });
+		// stop.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		stopActionPerformed(evt);
+		// 	}
+		// });
 
-		reverse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				switchActionPerformed(evt);
-			}
-		});
-		shuffle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				switchActionPerformed(evt);
-			}
-		});
-		useRules.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				switchActionPerformed(evt);
-			}
-		});
-		ignoreCase.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				switchActionPerformed(evt);
-			}
-		});
+		// reverse.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		switchActionPerformed(evt);
+		// 	}
+		// });
+		// shuffle.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		switchActionPerformed(evt);
+		// 	}
+		// });
+		// useRules.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		switchActionPerformed(evt);
+		// 	}
+		// });
+		// ignoreCase.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		switchActionPerformed(evt);
+		// 	}
+		// });
 
-		reverse.setActionCommand(ConfigurationDefaultOptions.REVERSE);
-		shuffle.setActionCommand(ConfigurationDefaultOptions.SHUFFLE);
-		useRules.setActionCommand(ConfigurationDefaultOptions.USE_RULES);
-		ignoreCase.setActionCommand(ConfigurationDefaultOptions.IGNORE_CASE);
+		// reverse.setActionCommand(ConfigurationDefaultOptions.REVERSE);
+		// shuffle.setActionCommand(ConfigurationDefaultOptions.SHUFFLE);
+		// useRules.setActionCommand(ConfigurationDefaultOptions.USE_RULES);
+		// ignoreCase.setActionCommand(ConfigurationDefaultOptions.IGNORE_CASE);
 
-		edit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				editItemActionPerformed(evt);
-			}
-		});
-		erase.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				eraseActionPerformed(evt);
-			}
-		});
-		remove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				removeItemActionPerformed(evt);
-			}
-		});
+		// edit.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		editItemActionPerformed(evt);
+		// 	}
+		// });
+		// erase.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		eraseActionPerformed(evt);
+		// 	}
+		// });
+		// remove.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		removeItemActionPerformed(evt);
+		// 	}
+		// });
 
 		// handbook.addActionListener(new ActionListener() {
 		// 	public void actionPerformed(ActionEvent evt) {
 		// 		handbookActionPerformed(evt);
 		// 	}
 		// });
-		dictionary.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				dictionaryActionPerformed(evt);
-			}
-		});
+		// dictionary.addActionListener(new ActionListener() {
+		// 	public void actionPerformed(ActionEvent evt) {
+		// 		dictionaryActionPerformed(evt);
+		// 	}
+		// });
 
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
@@ -1028,40 +1167,40 @@ public class Main extends JFrame {
 	 */
 	private void setComponentMnemonics() {
 
-		startTest.setMnemonic(KeyEvent.VK_S);
+		// startTest.setMnemonic(KeyEvent.VK_S);
 		//helpMeButton.setMnemonic(KeyEvent.VK_F1);
-		ok.setMnemonic(KeyEvent.VK_ENTER);
+		// ok.setMnemonic(KeyEvent.VK_ENTER);
 
 		// helpMeButton.getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control H"));
 
-		file.setMnemonic(KeyEvent.VK_F);
-		open.setMnemonic(KeyEvent.VK_O);
-		internet.setMnemonic(KeyEvent.VK_N);
-		manage.setMnemonic(KeyEvent.VK_M);
-		quit.setMnemonic(KeyEvent.VK_Q);
+		// file.setMnemonic(KeyEvent.VK_F);
+		// open.setMnemonic(KeyEvent.VK_O);
+		// internet.setMnemonic(KeyEvent.VK_N);
+		// manage.setMnemonic(KeyEvent.VK_M);
+		// quit.setMnemonic(KeyEvent.VK_Q);
 
 
-		test.setMnemonic(KeyEvent.VK_T);
-		start.setMnemonic(KeyEvent.VK_S);
-		stop.setMnemonic(KeyEvent.VK_T);
+		// test.setMnemonic(KeyEvent.VK_T);
+		// start.setMnemonic(KeyEvent.VK_S);
+		// stop.setMnemonic(KeyEvent.VK_T);
 		// helpMe.setMnemonic(KeyEvent.VK_H);
-		training.setMnemonic(KeyEvent.VK_M);
-		shuffle.setMnemonic(KeyEvent.VK_F);
-		reverse.setMnemonic(KeyEvent.VK_R);
-		useRules.setMnemonic(KeyEvent.VK_U);
-		ignoreCase.setMnemonic(KeyEvent.VK_C);
-		repetitionType.setMnemonic(KeyEvent.VK_F);
+		// training.setMnemonic(KeyEvent.VK_M);
+		// shuffle.setMnemonic(KeyEvent.VK_F);
+		// reverse.setMnemonic(KeyEvent.VK_R);
+		// useRules.setMnemonic(KeyEvent.VK_U);
+		// ignoreCase.setMnemonic(KeyEvent.VK_C);
+		// repetitionType.setMnemonic(KeyEvent.VK_F);
 
-		preferences.setMnemonic(KeyEvent.VK_P);
-		language.setMnemonic(KeyEvent.VK_V);
-		statistics.setMnemonic(KeyEvent.VK_S);
-		configuration.setMnemonic(KeyEvent.VK_C);
-		reload.setMnemonic(KeyEvent.VK_R);
+		// preferences.setMnemonic(KeyEvent.VK_P);
+		// language.setMnemonic(KeyEvent.VK_V);
+		// statistics.setMnemonic(KeyEvent.VK_S);
+		// configuration.setMnemonic(KeyEvent.VK_C);
+		// reload.setMnemonic(KeyEvent.VK_R);
 
 		// help.setMnemonic(KeyEvent.VK_H);
-		dictionary.setMnemonic(KeyEvent.VK_D);
+		// dictionary.setMnemonic(KeyEvent.VK_D);
 		// handbook.setMnemonic(KeyEvent.VK_H);
-		about.setMnemonic(KeyEvent.VK_A);
+		// about.setMnemonic(KeyEvent.VK_A);
 
 		// OK REACTS TO ENTER IN ANSWER FIELD
 		answer.addKeyListener(new java.awt.event.KeyListener() {
@@ -1210,60 +1349,60 @@ public class Main extends JFrame {
 		// 		.getConfig(ConfigurationDefaultMessages.HELP_ME));
 		grade.setText(configurationAndSettings.messageConfiguration
 				.getConfig(ConfigurationDefaultMessages.SCORE));
-		file.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.FILE));
-		open.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.OPEN));
-		quit.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.QUIT));
-		test.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.TEST));
-		helpMe.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.HELP_ME));
-		start.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.START_TEST));
-		shuffle.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.SHUFFLE));
-		training.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.TRAINING_MODE));
-		reverse.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.REVERSE));
-		erase.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.ERASE_REPETITION));
-		edit.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.EDIT_QUESTION));
-		preferences.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.PREFERENCES));
-		language.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.LANGUAGE_VERSION));
-		configuration.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.CONFIGURATION));
+		// file.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.FILE));
+		// open.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.OPEN));
+		// quit.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.QUIT));
+		// test.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.TEST));
+		// helpMe.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.HELP_ME));
+		// start.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.START_TEST));
+		// shuffle.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.SHUFFLE));
+		// training.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.TRAINING_MODE));
+		// reverse.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.REVERSE));
+		// erase.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.ERASE_REPETITION));
+		// edit.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.EDIT_QUESTION));
+		// preferences.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.PREFERENCES));
+		// language.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.LANGUAGE_VERSION));
+		// configuration.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.CONFIGURATION));
 		statistics.setText(configurationAndSettings.messageConfiguration
 				.getConfig(ConfigurationDefaultMessages.STATISTICS));
 		// handbook.setText(configurationAndSettings.messageConfiguration
 		// 		.getConfig(ConfigurationDefaultMessages.HANDBOOK));
-		about.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.ABOUT));
-		help.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.HELP));
-		remove.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.REMOVE));
-		manage.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.MANAGE));
-		internet.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.INTERNET));
-		reload.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.RELOAD));
-		useRules.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.USE_RULES));
-		ignoreCase.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.IGNORE_CASE));
-		repetitionType.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.FORCED_REPETITION));
-		stop.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.STOP));
-		dictionary.setText(configurationAndSettings.messageConfiguration
-				.getConfig(ConfigurationDefaultMessages.DICTIONARY));
+		// about.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.ABOUT));
+		// help.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.HELP));
+		// remove.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.REMOVE));
+		// manage.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.MANAGE));
+		// internet.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.INTERNET));
+		// reload.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.RELOAD));
+		// useRules.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.USE_RULES));
+		// ignoreCase.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.IGNORE_CASE));
+		// repetitionType.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.FORCED_REPETITION));
+		// stop.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.STOP));
+		// dictionary.setText(configurationAndSettings.messageConfiguration
+		// 		.getConfig(ConfigurationDefaultMessages.DICTIONARY));
 		goodAnswer = new ImageIcon(configurationAndSettings.pathConfiguration
 				.getConfig(ConfigurationDefaultPath.GOOD_ICON));
 		poorAnswer = new ImageIcon(configurationAndSettings.pathConfiguration
